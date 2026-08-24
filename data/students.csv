@@ -1,0 +1,4 @@
+id,userId,rollNumber,routeId,assignedBusId,pickupStopId
+91801ef7-17ac-4fff-a3f2-d8e56db1ee74,0b3921f2-3e6d-48b1-ab4a-5710d9e21b10,1BT21CS045,route-05,bus-05,a31cd3c8-bb31-49fe-8329-cb65dd7756b1
+8d5d2b55-199b-4dae-804d-4568409a7ea7,8e7ca461-c99a-4ea0-98ee-c68dfa2456fd,1BT21EC012,route-05,bus-05,72bd8e62-916e-4851-8b1e-981b524f18d5
+7f1389e0-3b5d-451e-b922-69806c065707,05e2e858-7319-4fdd-9fc7-28586d8ed0c8,1BT21ME078,route-12,bus-12,bdc76e67-d5e5-4d33-9463-2211bcba2f60

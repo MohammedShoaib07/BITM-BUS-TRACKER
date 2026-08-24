@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="title desc">
+  <title id="title">BITM logo</title>
+  <desc id="desc">Ballari Institute of Technology and Management</desc>
+  <rect width="320" height="120" rx="24" fill="#f8fcff"/>
+  <path d="M34 50C48 18 106 8 162 16c38 5 69 18 91 34" fill="none" stroke="#12a9df" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="160" cy="62" rx="116" ry="38" fill="#fff" stroke="#1d242b" stroke-width="3" transform="rotate(-3 160 62)"/>
+  <circle cx="72" cy="60" r="24" fill="#1d242b"/>
+  <path d="M72 37v46M49 60h46M56 44l32 32M88 44 56 76" stroke="#fff" stroke-width="1.8" opacity=".9"/>
+  <text x="107" y="69" font-family="Arial,sans-serif" font-size="36" font-weight="800" font-style="italic" fill="#08a7df">BITM</text>
+  <text x="72" y="101" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#1d242b">ENGINEERING  •  TECHNOLOGY  •  MANAGEMENT</text>
+  <text x="245" y="88" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#1d242b">ESTD : 1997</text>
+</svg>

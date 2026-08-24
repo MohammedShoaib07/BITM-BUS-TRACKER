@@ -1,0 +1,3 @@
+id,registrationNumber,routeId,capacity,status
+bus-05,KA-34-F-1234,route-05,45,active
+bus-12,KA-34-F-5678,route-12,40,active

@@ -1,0 +1,4 @@
+id,studentId,busId,tripId,result,reason,timestamp
+09a50fad-1b73-4906-b478-aba53e8f2343,91801ef7-17ac-4fff-a3f2-d8e56db1ee74,bus-05,77038e1b-f979-4b88-85bb-641f3a8735f2,ALLOW,"Pass valid, fee paid, correct bus and route.",2026-08-24T20:02:26.147Z
+a4657355-b6a8-4d3b-b290-af49655c7f9a,91801ef7-17ac-4fff-a3f2-d8e56db1ee74,bus-05,77038e1b-f979-4b88-85bb-641f3a8735f2,ALLOW,"Pass valid, fee paid, correct bus and route.",2026-08-24T20:02:29.167Z
+e8320123-9c92-4348-968e-d72759abdf94,91801ef7-17ac-4fff-a3f2-d8e56db1ee74,bus-05,77038e1b-f979-4b88-85bb-641f3a8735f2,ALLOW,"Pass valid, fee paid, correct bus and route.",2026-08-24T20:02:46.757Z

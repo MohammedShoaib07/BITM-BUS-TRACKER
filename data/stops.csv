@@ -1,0 +1,8 @@
+id,routeId,name,latitude,longitude,sequence
+72bd8e62-916e-4851-8b1e-981b524f18d5,route-05,Karnataka Function Hall,15.151975303275044,76.8918867863264,1
+a31cd3c8-bb31-49fe-8329-cb65dd7756b1,route-05,Maruti Suzuki Showroom,15.164386618963562,76.86396323909958,2
+e1136520-0e15-4d86-b1c1-bcc2ee91429a,route-05,BITM College,15.168364302977647,76.8508134713878,3
+a03e222f-1ba1-4e67-8e1b-9df0d394c736,route-12,Gandhinagar,15.1389,76.9203,1
+bdc76e67-d5e5-4d33-9463-2211bcba2f60,route-12,Bellary Bypass,15.142,76.9245,2
+faac5d99-dee1-4f71-a8fc-cfeaf77fb380,route-12,Cowl Bazaar,15.1465,76.926,3
+abeaeb25-1086-4995-9a3b-08d5bf44ee37,route-12,BITM,15.1523,76.928,4
