@@ -40,7 +40,7 @@ app.use("/api/boarding", boardingRoutes);
 
 app.use((req, res) => res.status(404).json({ error: `No route for ${req.method} ${req.path}` }));
 
-server.listen(PORT, () => {
-  console.log(`BITM SmartBus server listening on http://localhost:${PORT}`);
+server.listen(Number(PORT), "0.0.0.0", () => {
+  console.log(`BITM SmartBus server listening on port ${PORT}`);
   console.log(`Socket.IO ready. Accepting client origin: ${CLIENT_ORIGIN}`);
 });
