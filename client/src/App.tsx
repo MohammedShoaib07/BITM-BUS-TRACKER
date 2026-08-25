@@ -21,7 +21,7 @@ function NavBar() {
     <header className="sticky top-0 z-20 px-3 pt-3 sm:px-5">
       <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between rounded-3xl px-4 py-3 sm:px-5">
         <Link to="/" className="flex items-center gap-3">
-          <img src="/bitm-logo.svg" alt="BITM" className="h-10 w-24 object-contain" />
+          <img src="/bitm-logo.jpg" alt="BITM" className="h-10 w-24 object-contain" />
           <span className="hidden border-l border-slate-300 pl-3 text-sm font-bold text-slate-800 sm:block">SmartBus</span>
         </Link>
         <nav className="flex items-center gap-1 text-sm">

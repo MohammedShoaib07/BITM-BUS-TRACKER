@@ -77,6 +77,16 @@ export function buildTrackingSnapshot(fix: RawFix): TrackingSnapshot {
   );
   const distanceCoveredOnSegment = segmentLengthMeters * bestT;
   const distanceToNextStopMeters = Math.max(0, segmentLengthMeters - distanceCoveredOnSegment);
+  const distanceBeforeSegment = stops.slice(0, bestSegmentIdx + 1).reduce(
+    (total, stop, index) => index === 0
+      ? total
+      : total + calculateDistance(stops[index - 1].latitude, stops[index - 1].longitude, stop.latitude, stop.longitude),
+    0
+  );
+  const totalRouteDistanceMeters = stops.slice(1).reduce(
+    (total, stop, index) => total + calculateDistance(stops[index].latitude, stops[index].longitude, stop.latitude, stop.longitude),
+    0
+  );
 
   // Effective speed: use real reported speed if moving meaningfully, else fallback.
   const fallbackMps = (FALLBACK_SPEED_KMH * 1000) / 3600;
@@ -112,8 +122,8 @@ export function buildTrackingSnapshot(fix: RawFix): TrackingSnapshot {
     });
   }
 
-  const progressPercent = segmentLengthMeters > 0
-    ? Math.round((distanceCoveredOnSegment / segmentLengthMeters) * 100)
+  const progressPercent = totalRouteDistanceMeters > 0
+    ? Math.round(((distanceBeforeSegment + distanceCoveredOnSegment) / totalRouteDistanceMeters) * 100)
     : 0;
 
   return {

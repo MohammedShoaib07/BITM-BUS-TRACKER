@@ -44,6 +44,7 @@ export default function DriverDashboard() {
 
   async function startTrip() {
     if (!profile?.bus?.id) return;
+    setSnapshot(null);
     const res = await api.post("/tracking/trip/start", { busId: profile.bus.id, mode: gpsMode });
     setTrip(res.data);
 

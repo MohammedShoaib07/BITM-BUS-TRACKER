@@ -31,7 +31,7 @@ export default function Login() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-4">
       <div className="glass-panel relative w-full max-w-md rounded-[2rem] p-7 sm:p-9">
         <div className="mb-7 text-center">
-          <img src="/bitm-logo.svg" alt="BITM logo" className="mx-auto mb-4 h-24 w-64 object-contain" />
+          <img src="/bitm-logo.jpg" alt="BITM logo" className="mx-auto mb-4 h-24 w-64 object-contain" />
           <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-700">Campus mobility, simplified</p>
           <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">Welcome to SmartBus</h1>
           <p className="mt-1 text-sm text-slate-500">Track every campus journey in real time.</p>
@@ -79,8 +79,8 @@ export default function Login() {
             <button onClick={() => fill("driver1@bitm.edu", "driver123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
               Driver — driver1@bitm.edu / driver123 (Bus 05)
             </button>
-            <button onClick={() => fill("shoaib@bitm.edu", "student123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
-              Student — shoaib@bitm.edu / student123 (fee PAID)
+            <button onClick={() => fill("shoaib@bitm.edu", "student@123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
+              Student — shoaib@bitm.edu / student@123 (fee PAID)
             </button>
             <button onClick={() => fill("arjun@bitm.edu", "student123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
               Student — arjun@bitm.edu / student123 (fee PENDING → denied demo)

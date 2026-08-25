@@ -79,6 +79,7 @@ router.post("/trip/start", requireAuth, requireRole("driver", "admin"), (req: Au
     endedAt: ""
   };
   tripsRepo.insert(trip);
+  latestSnapshotByBus.delete(busId);
 
   if (mode === "simulation") {
     startSimulation(busId, trip.id, bus.routeId, ingestLocation);
