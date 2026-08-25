@@ -8,6 +8,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [language, setLanguage] = useState<"en" | "kn">("en");
+  const kannada = language === "kn";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,16 +32,26 @@ export default function Login() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-4">
       <div className="glass-panel relative w-full max-w-md rounded-[2rem] p-7 sm:p-9">
+        <div className="mb-3 flex justify-end">
+          <button
+            type="button"
+            onClick={() => setLanguage(kannada ? "en" : "kn")}
+            className="rounded-full border border-slate-300 bg-white/70 px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-white"
+            aria-label={kannada ? "Switch to English" : "ಕನ್ನಡಕ್ಕೆ ಬದಲಾಯಿಸಿ"}
+          >
+            {kannada ? "English" : "ಕನ್ನಡ"}
+          </button>
+        </div>
         <div className="mb-7 text-center">
           <img src="/bitm-logo.jpg" alt="BITM logo" className="mx-auto mb-4 h-24 w-64 object-contain" />
           <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-700">Campus mobility, simplified</p>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">Welcome to SmartBus</h1>
-          <p className="mt-1 text-sm text-slate-500">Track every campus journey in real time.</p>
+          <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">{kannada ? "SmartBus ಗೆ ಸ್ವಾಗತ" : "Welcome to SmartBus"}</h1>
+          <p className="mt-1 text-sm text-slate-500">{kannada ? "ಪ್ರತಿ ಕ್ಯಾಂಪಸ್ ಪ್ರಯಾಣವನ್ನು ನೈಜ ಸಮಯದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ." : "Track every campus journey in real time."}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Email</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">{kannada ? "ಇಮೇಲ್" : "Email"}</label>
             <input
               type="email"
               required
@@ -50,7 +62,7 @@ export default function Login() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">{kannada ? "ಪಾಸ್‌ವರ್ಡ್" : "Password"}</label>
             <input
               type="password"
               required
@@ -66,18 +78,18 @@ export default function Login() {
             disabled={submitting}
             className="brand-gradient w-full rounded-2xl px-4 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-900/20 hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-60"
           >
-            {submitting ? "Signing in…" : "Sign in"}
+            {submitting ? (kannada ? "ಲಾಗಿನ್ ಆಗುತ್ತಿದೆ…" : "Signing in…") : (kannada ? "ಲಾಗಿನ್" : "Sign in")}
           </button>
         </form>
 
         <div className="mt-6 rounded-2xl border border-white/70 bg-white/40 p-3 text-xs text-slate-600">
-          <p className="mb-2 font-semibold text-slate-700">Demo accounts (seeded data):</p>
+          <p className="mb-2 font-semibold text-slate-700">{kannada ? "ಡೆಮೊ ಖಾತೆಗಳು:" : "Demo accounts (seeded data):"}</p>
           <div className="grid grid-cols-1 gap-1.5">
             <button onClick={() => fill("admin@bitm.edu", "admin123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
               Admin — admin@bitm.edu / admin123
             </button>
             <button onClick={() => fill("driver1@bitm.edu", "driver123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
-              Driver — driver1@bitm.edu / driver123 (Bus 05)
+              {kannada ? "ಚಾಲಕ" : "Driver"} — driver1@bitm.edu / driver123 (Bus 05)
             </button>
             <button onClick={() => fill("shoaib@bitm.edu", "student@123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
               Student — shoaib@bitm.edu / student@123 (fee PAID)

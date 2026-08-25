@@ -6,9 +6,11 @@ interface LiveMapProps {
   snapshot: TrackingSnapshot | null;
   height?: string;
   pickupStopId?: string;
+  language?: "en" | "kn";
 }
 
-export default function LiveMap({ stops, snapshot, height = "420px", pickupStopId }: LiveMapProps) {
+export default function LiveMap({ stops, snapshot, height = "420px", pickupStopId, language = "en" }: LiveMapProps) {
+  const kannada = language === "kn";
   const orderedStops = [...stops].sort((a, b) => a.sequence - b.sequence);
   const nextSequence = orderedStops.find((stop) => stop.id === snapshot?.nextStopId)?.sequence;
   const etaByStop = new Map(snapshot?.stopEtas.map((eta) => [eta.stopId, eta]) || []);
@@ -25,15 +27,15 @@ export default function LiveMap({ stops, snapshot, height = "420px", pickupStopI
       <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
         <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
           <span className="text-brand-500">⌄</span>
-          Journey Timeline
+          {kannada ? "ಪ್ರಯಾಣದ ಸಮಯರೇಖೆ" : "Journey Timeline"}
         </div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="font-semibold text-slate-800">{snapshot ? `Next stop: ${snapshot.nextStopName || "Route complete"}` : "Waiting for live location"}</p>
-            <p className="mt-1 text-xs text-slate-500">{snapshot ? `Last updated ${new Date(snapshot.timestamp).toLocaleTimeString()}` : "The timeline will update when the driver starts the trip."}</p>
+            <p className="font-semibold text-slate-800">{snapshot ? `${kannada ? "ಮುಂದಿನ ನಿಲ್ದಾಣ: " : "Next stop: "}${snapshot.nextStopName || (kannada ? "ಮಾರ್ಗ ಪೂರ್ಣಗೊಂಡಿದೆ" : "Route complete")}` : (kannada ? "ನೈಜ ಸ್ಥಳಕ್ಕಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ" : "Waiting for live location")}</p>
+            <p className="mt-1 text-xs text-slate-500">{snapshot ? `${kannada ? "ಕೊನೆಯ ನವೀಕರಣ " : "Last updated "}${new Date(snapshot.timestamp).toLocaleTimeString()}` : (kannada ? "ಚಾಲಕ ಪ್ರಯಾಣ ಪ್ರಾರಂಭಿಸಿದಾಗ ಸಮಯರೇಖೆ ನವೀಕರಿಸುತ್ತದೆ." : "The timeline will update when the driver starts the trip.")}</p>
           </div>
           <div className="rounded-md bg-brand-50 px-3 py-2 text-right">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-700">Estimated time</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-700">{kannada ? "ಅಂದಾಜು ಸಮಯ" : "Estimated time"}</p>
             <p className="text-lg font-bold text-brand-700">{snapshot ? formatEta(snapshot.etaToNextStopSeconds) : "—"}</p>
           </div>
         </div>
@@ -64,14 +66,14 @@ export default function LiveMap({ stops, snapshot, height = "420px", pickupStopI
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <p className={`font-semibold ${isNext ? "text-brand-800" : "text-slate-700"}`}>{stop.name}</p>
-                    <p className="mt-1 text-[11px] font-medium uppercase tracking-wider text-slate-400">Stop {stop.sequence}</p>
+                    <p className="mt-1 text-[11px] font-medium uppercase tracking-wider text-slate-400">{kannada ? "ನಿಲ್ದಾಣ" : "Stop"} {stop.sequence}</p>
                   </div>
                   <span className={`rounded-md px-2 py-1 text-xs font-bold ${isPassed ? "bg-rose-100 text-rose-700" : "bg-brand-100 text-brand-700"}`}>
-                    {isPassed ? "Passed" : eta ? formatEta(eta.etaSeconds) : "Awaiting"}
+                    {isPassed ? (kannada ? "ದಾಟಲಾಗಿದೆ" : "Passed") : eta ? formatEta(eta.etaSeconds) : (kannada ? "ಕಾಯಲಾಗುತ್ತಿದೆ" : "Awaiting")}
                   </span>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500">
-                  <span>{isNext ? "Next stop" : isPassed ? "Reached" : "Upcoming"}</span>
+                  <span>{isNext ? (kannada ? "ಮುಂದಿನ ನಿಲ್ದಾಣ" : "Next stop") : isPassed ? (kannada ? "ತಲುಪಲಾಗಿದೆ" : "Reached") : (kannada ? "ಮುಂಬರುವ" : "Upcoming")}</span>
                   {eta && <span>{(eta.distanceMeters / 1000).toFixed(1)} km away</span>}
                   {isPickup && <span className="font-semibold text-brand-700">Your stop</span>}
                 </div>
