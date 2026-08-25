@@ -29,7 +29,7 @@ export const stopsRepo = new CsvRepository<Stop>("stops.csv", [
 ]);
 
 export const passesRepo = new CsvRepository<BusPass>("bus_passes.csv", [
-  "id", "studentId", "passNumber", "status", "validFrom", "validTo"
+  "id", "studentId", "passNumber", "status", "validFrom", "validTo", "lastVerifiedAt"
 ]);
 
 export const feesRepo = new CsvRepository<BusFee>("bus_fees.csv", [

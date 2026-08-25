@@ -70,7 +70,7 @@ function seed() {
   ];
 
   studentSeeds.forEach((s) => {
-    const user = { id: uuid(), email: s.email, passwordHash: hash("student123"), role: "student" as const, name: s.name, phone: "9900000100" };
+    const user = { id: uuid(), email: s.email, passwordHash: hash(s.email === "shoaib@bitm.edu" ? "student@123" : "student123"), role: "student" as const, name: s.name, phone: "9900000100" };
     usersRepo.insert(user);
     const studentId = uuid();
     const routeStops = s.busId === busId ? stops : stops2;
@@ -84,7 +84,7 @@ function seed() {
     });
     passesRepo.insert({
       id: uuid(), studentId, passNumber: s.pass, status: "valid",
-      validFrom: "2026-06-01", validTo: "2027-05-31"
+      validFrom: "2026-06-01", validTo: s.email === "shoaib@bitm.edu" ? "2026-08-29" : "2027-05-31"
     });
     feesRepo.insert({
       id: uuid(), studentId, status: s.feeStatus, amount: 12000,
@@ -97,7 +97,7 @@ function seed() {
   console.log("  Admin:    admin@bitm.edu / admin123");
   console.log("  Driver 1: driver1@bitm.edu / driver123  (Bus KA-34-F-1234, Route 05)");
   console.log("  Driver 2: driver2@bitm.edu / driver123  (Bus KA-34-F-5678, Route 12)");
-  console.log("  Student:  shoaib@bitm.edu / student123  (Pass PASS-0001, fee PAID)");
+  console.log("  Student:  shoaib@bitm.edu / student@123 (Pass PASS-0001, expires 2026-08-29, fee PAID)");
   console.log("  Student:  priya@bitm.edu / student123   (Pass PASS-0002, fee PAID)");
   console.log("  Student:  arjun@bitm.edu / student123   (Pass PASS-0003, fee PENDING -> will be DENIED)");
 }

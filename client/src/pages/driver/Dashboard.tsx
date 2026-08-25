@@ -14,6 +14,9 @@ export default function DriverDashboard() {
   const [gpsError, setGpsError] = useState<string | null>(null);
   const [scannerOn, setScannerOn] = useState(false);
   const [scanResult, setScanResult] = useState<{ result: string; reason: string } | null>(null);
+  const [monthlyVerification, setMonthlyVerification] = useState<any>(null);
+  const [monthlyVerificationLoading, setMonthlyVerificationLoading] = useState(false);
+  const [monthlyVerificationError, setMonthlyVerificationError] = useState<string | null>(null);
   const [manualPass, setManualPass] = useState("");
   const watchIdRef = useRef<number | null>(null);
 
@@ -88,6 +91,20 @@ export default function DriverDashboard() {
     }
   }
 
+  async function verifyMonthlyPasses() {
+    if (!profile?.bus?.id) return;
+    setMonthlyVerificationLoading(true);
+    setMonthlyVerificationError(null);
+    try {
+      const res = await api.post("/boarding/monthly-verify", { busId: profile.bus.id });
+      setMonthlyVerification(res.data);
+    } catch (e: any) {
+      setMonthlyVerificationError(e?.response?.data?.error || "Monthly pass verification failed.");
+    } finally {
+      setMonthlyVerificationLoading(false);
+    }
+  }
+
   if (!profile) return <p className="p-6 text-slate-500">Loading driver dashboard…</p>;
   const { bus, route, stops } = profile;
 
@@ -131,6 +148,49 @@ export default function DriverDashboard() {
             The simulator generates real lat/lng fixes and pushes them through the same backend tracking pipeline as real GPS —
             it does not fake movement on the frontend.
           </p>
+        )}
+      </Card>
+
+      <Card title="Monthly Pass Verification">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="max-w-xl text-sm text-slate-600">Verify every student assigned to this bus once at the start of the month. This does not create a boarding record.</p>
+          <button onClick={verifyMonthlyPasses} disabled={monthlyVerificationLoading} className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60">
+            {monthlyVerificationLoading ? "Checking passes..." : "Verify monthly passes"}
+          </button>
+        </div>
+        {monthlyVerificationError && <p className="mt-3 text-sm text-rose-600">{monthlyVerificationError}</p>}
+        {monthlyVerification && (
+          <div className="mt-4 space-y-3">
+            <p className="text-xs text-slate-500">Verified on {monthlyVerification.verificationDate}. {monthlyVerification.alreadyVerified ? "Already verified this month." : "Monthly verification completed."}</p>
+            {monthlyVerification.expiringStudents.length > 0 && (
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
+                <p className="font-semibold text-amber-800">Passes expiring within 30 days</p>
+                <div className="mt-2 space-y-2">
+                  {monthlyVerification.expiringStudents.map((student: any) => (
+                    <div key={student.studentId} className="flex flex-wrap items-center justify-between gap-2 text-sm text-amber-900">
+                      <span><strong>{student.name}</strong> · {student.rollNumber} · {student.passNumber}</span>
+                      <span className="font-bold">Expires {student.expiryDate}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead><tr className="border-b border-slate-200 text-slate-500"><th className="py-2 pr-3">Student</th><th className="py-2 pr-3">Roll No.</th><th className="py-2 pr-3">Pass</th><th className="py-2">Expiry date</th></tr></thead>
+                <tbody>
+                  {monthlyVerification.students.map((student: any) => (
+                    <tr key={student.studentId} className="border-b border-slate-100">
+                      <td className="py-2 pr-3">{student.name}</td>
+                      <td className="py-2 pr-3">{student.rollNumber}</td>
+                      <td className="py-2 pr-3">{student.passNumber || "Missing"}</td>
+                      <td className={`py-2 font-medium ${student.status === "expires_this_month" ? "text-amber-700" : student.status === "expired" ? "text-rose-700" : "text-slate-700"}`}>{student.expiryDate || "—"}{student.status === "expires_this_month" && " · Expires this month"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
       </Card>
 

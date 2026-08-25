@@ -139,6 +139,7 @@ export default function AdminDashboard() {
                   <th className="py-2 pr-4">Roll No.</th>
                   <th className="py-2 pr-4">Fee</th>
                   <th className="py-2 pr-4">Pass</th>
+                  <th className="py-2 pr-4">Expiry date</th>
                   <th className="py-2 pr-4">Actions</th>
                 </tr>
               </thead>
@@ -149,6 +150,7 @@ export default function AdminDashboard() {
                     <td className="py-2 pr-4">{s.rollNumber}</td>
                     <td className="py-2 pr-4"><Badge tone={s.fee?.status === "PAID" ? "green" : "red"}>{s.fee?.status}</Badge></td>
                     <td className="py-2 pr-4"><Badge tone={s.pass?.status === "valid" ? "green" : "red"}>{s.pass?.status}</Badge></td>
+                    <td className={`py-2 pr-4 ${s.pass?.validTo && s.pass.validTo <= new Date().toISOString().slice(0, 10) ? "font-semibold text-rose-700" : "text-slate-700"}`}>{s.pass?.validTo || "—"}</td>
                     <td className="py-2 pr-4 space-x-2">
                       <button onClick={() => toggleFee(s.id, s.fee?.status)} className="rounded border border-slate-300 px-2 py-1 text-xs hover:bg-slate-50">
                         Toggle fee

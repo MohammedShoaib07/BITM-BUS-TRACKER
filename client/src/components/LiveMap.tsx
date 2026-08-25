@@ -27,6 +27,21 @@ export default function LiveMap({ stops, snapshot, height = "420px", pickupStopI
           <span className="text-brand-500">⌄</span>
           Journey Timeline
         </div>
+        <div className="relative mt-5 h-7" aria-label={snapshot ? `Bus is ${Math.round(snapshot.progressPercent)} percent along the route` : "Bus location unavailable"}>
+          <div className="absolute left-1 right-1 top-3 h-1 rounded-full bg-slate-200">
+            <div
+              className="h-full rounded-full bg-brand-500 transition-[width] duration-700 ease-out"
+              style={{ width: `${Math.max(0, Math.min(100, snapshot?.progressPercent || 0))}%` }}
+            />
+          </div>
+          <span
+            className="absolute top-0 z-10 -translate-x-1/2 text-lg leading-6 transition-[left] duration-700 ease-out"
+            style={{ left: `${Math.max(2, Math.min(98, snapshot?.progressPercent || 0))}%` }}
+            title="Live bus position"
+          >
+            🚌
+          </span>
+        </div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="font-semibold text-slate-800">{snapshot ? `Next stop: ${snapshot.nextStopName || "Route complete"}` : "Waiting for live location"}</p>

@@ -55,6 +55,7 @@ export interface BusPass {
   status: "valid" | "expired" | "suspended";
   validFrom: string;
   validTo: string;
+  lastVerifiedAt?: string;
 }
 
 export interface BusFee {
