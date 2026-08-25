@@ -57,12 +57,10 @@ export default function StudentDashboard() {
 
   const { bus, route, stops, pickupStop, pass, fee, activeTrip, driver } = profile;
 
-  const pickupEta = snapshot?.stopEtas.find((s) => s.stopId === pickupStop?.id);
-
   return (
     <div className="mx-auto max-w-5xl space-y-4 p-4">
       <Card title={`${route?.name || "Route"} — ${bus?.registrationNumber || "Bus"}`} right={activeTrip ? <Badge tone="green">Live trip in progress</Badge> : <Badge tone="slate">No active trip</Badge>}>
-        {driver && <p className="mb-3 text-sm text-slate-600">Driver: <strong className="text-slate-800">{driver.name}</strong> · {driver.phone} · Bus {bus?.registrationNumber}</p>}
+        {driver && <p className="mb-3 text-sm text-slate-600">Driver: <strong className="text-slate-800">{driver.name}</strong> · <a href={`tel:${driver.phone}`} className="font-semibold text-brand-700 hover:underline">{driver.phone}</a> · Bus {bus?.registrationNumber}</p>}
         <LiveMap stops={stops} snapshot={snapshot} pickupStopId={pickupStop?.id} />
       </Card>
 

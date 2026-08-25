@@ -27,21 +27,6 @@ export default function LiveMap({ stops, snapshot, height = "420px", pickupStopI
           <span className="text-brand-500">⌄</span>
           Journey Timeline
         </div>
-        <div className="relative mt-5 h-8" aria-label={snapshot ? `Bus is ${Math.round(snapshot.progressPercent)} percent along the route` : "Bus location unavailable"}>
-          <div className="absolute left-1 right-1 top-1/2 h-1 -translate-y-1/2 rounded-full bg-slate-200">
-            <div
-              className="h-full rounded-full bg-brand-500 transition-[width] duration-700 ease-out"
-              style={{ width: `${Math.max(0, Math.min(100, snapshot?.progressPercent || 0))}%` }}
-            />
-          </div>
-          <span
-            className="absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-0.5 text-sm leading-5 transition-[left] duration-700 ease-out"
-            style={{ left: `${Math.max(2, Math.min(98, snapshot?.progressPercent || 0))}%` }}
-            title="Live bus position"
-          >
-            🚌
-          </span>
-        </div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="font-semibold text-slate-800">{snapshot ? `Next stop: ${snapshot.nextStopName || "Route complete"}` : "Waiting for live location"}</p>
@@ -53,25 +38,36 @@ export default function LiveMap({ stops, snapshot, height = "420px", pickupStopI
           </div>
         </div>
       </div>
-      <ol className="space-y-3 px-4 py-5 sm:px-6">
+      <ol className="relative space-y-3 px-4 py-5 sm:px-6">
+        <span className={`pointer-events-none absolute bottom-5 left-[1.55rem] top-5 w-0.5 sm:left-[2.05rem] ${snapshot ? "bg-rose-300" : "bg-slate-200"}`} aria-hidden="true" />
+        {snapshot && (
+          <span
+            className="pointer-events-none absolute left-[1.55rem] z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-0.5 text-sm leading-5 shadow-sm transition-[top] duration-700 ease-out sm:left-[2.05rem]"
+            style={{ top: `${Math.max(2, Math.min(98, snapshot.progressPercent))}%` }}
+            title="Live bus position"
+            aria-label={`Live bus position, ${Math.round(snapshot.progressPercent)} percent along the route`}
+          >
+            🚌
+          </span>
+        )}
         {orderedStops.map((stop: Stop) => {
           const eta = etaByStop.get(stop.id);
           const isNext = stop.id === snapshot?.nextStopId;
           const isPassed = Boolean(snapshot && nextSequence !== undefined && stop.sequence < nextSequence && !eta);
+          const isPastOrUpcoming = Boolean(snapshot && !isNext);
           const isPickup = stop.id === pickupStopId;
           return (
             <li key={stop.id} className="relative flex gap-3">
               <div className="relative flex w-5 shrink-0 justify-center">
-                {stop.sequence < orderedStops.length && <span className="absolute top-5 h-[calc(100%+0.75rem)] w-0.5 bg-emerald-300" />}
-                <span className={`relative z-10 mt-1 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm ${isNext ? "bg-brand-500 ring-4 ring-brand-100" : isPassed ? "bg-emerald-500" : "bg-slate-300"}`} />
+                <span className={`relative z-10 mt-1 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm ${isNext ? "bg-brand-500 ring-4 ring-brand-100" : isPastOrUpcoming ? "bg-rose-500" : "bg-slate-300"}`} />
               </div>
-              <div className={`min-w-0 flex-1 rounded-xl px-4 py-3 ${isNext ? "border border-brand-200 bg-brand-50" : "bg-emerald-50/70"}`}>
+              <div className={`min-w-0 flex-1 rounded-xl px-4 py-3 ${isNext ? "border border-brand-200 bg-brand-50" : "border border-rose-100 bg-rose-50/70"}`}>
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <p className={`font-semibold ${isNext ? "text-brand-800" : "text-slate-700"}`}>{stop.name}</p>
                     <p className="mt-1 text-[11px] font-medium uppercase tracking-wider text-slate-400">Stop {stop.sequence}</p>
                   </div>
-                  <span className={`rounded-md px-2 py-1 text-xs font-bold ${isPassed ? "bg-slate-100 text-slate-500" : isNext ? "bg-brand-500 text-white" : "bg-emerald-100 text-emerald-700"}`}>
+                  <span className={`rounded-md px-2 py-1 text-xs font-bold ${isPassed ? "bg-rose-100 text-rose-700" : isNext ? "bg-brand-500 text-white" : "bg-rose-100 text-rose-700"}`}>
                     {isPassed ? "Passed" : eta ? formatEta(eta.etaSeconds) : "Awaiting"}
                   </span>
                 </div>

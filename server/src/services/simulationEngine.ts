@@ -17,8 +17,8 @@ interface SimState {
   status: "running" | "paused";
 }
 
-const TICK_MS = 1500;
-const SIM_SPEED_KMH = 28;
+const TICK_MS = 500;
+const TARGET_DURATION_SECONDS = 18;
 
 const activeSims = new Map<string, SimState>(); // key: busId
 
@@ -33,12 +33,16 @@ export function startSimulation(busId: string, tripId: string, routeId: string, 
 
   const stops = stopsRepo.findWhere((s) => s.routeId === routeId).sort((a, b) => a.sequence - b.sequence);
   if (stops.length < 2) throw new Error("Route needs at least 2 stops to simulate.");
+  const routeDistanceMeters = stops.slice(1).reduce(
+    (total, stop, index) => total + calculateDistance(stops[index].latitude, stops[index].longitude, stop.latitude, stop.longitude),
+    0
+  );
 
   const state: SimState = {
     busId, tripId, routeId,
     segmentIndex: 0,
     t: 0,
-    speedMps: (SIM_SPEED_KMH * 1000) / 3600,
+    speedMps: routeDistanceMeters / TARGET_DURATION_SECONDS,
     timer: null,
     status: "running"
   };
