@@ -61,7 +61,7 @@ export default function StudentDashboard() {
   return (
     <div className="mx-auto max-w-5xl space-y-4 p-4">
       <Card title={`${route?.name || "Route"} — ${bus?.registrationNumber || "Bus"}`} right={activeTrip ? <Badge tone="green">Live trip in progress</Badge> : <Badge tone="slate">No active trip</Badge>}>
-        <LiveMap stops={stops} snapshot={snapshot} />
+        <LiveMap stops={stops} snapshot={snapshot} pickupStopId={pickupStop?.id} />
       </Card>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -93,22 +93,6 @@ export default function StudentDashboard() {
         </Card>
       </div>
 
-      <Card title="Upcoming stops">
-        <ol className="space-y-2">
-          {stops.map((s: Stop) => {
-            const eta = snapshot?.stopEtas.find((e) => e.stopId === s.id);
-            const isPast = snapshot && eta === undefined && s.sequence <= (stops.find((x: Stop) => x.id === snapshot.nextStopId)?.sequence ?? Infinity) - 1;
-            return (
-              <li key={s.id} className="flex items-center justify-between rounded-lg border border-slate-100 px-3 py-2 text-sm">
-                <span className={s.id === pickupStop?.id ? "font-semibold text-brand-700" : "text-slate-700"}>
-                  {s.sequence}. {s.name} {s.id === pickupStop?.id && "📍 (your stop)"}
-                </span>
-                <span className="text-slate-500">{eta ? humanEta(eta.etaSeconds) : isPast ? "Passed" : "—"}</span>
-              </li>
-            );
-          })}
-        </ol>
-      </Card>
     </div>
   );
 }

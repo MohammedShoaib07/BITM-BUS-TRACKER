@@ -1,88 +1,75 @@
-import React, { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from "react-leaflet";
-import L from "leaflet";
+import React from "react";
 import { Stop, TrackingSnapshot } from "../types";
-
-// Fix default marker icon paths (Vite bundling breaks Leaflet's default asset resolution).
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
-});
-
-const stopIcon = new L.DivIcon({
-  className: "",
-  html: `<div style="width:14px;height:14px;border-radius:50%;background:#1763b8;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.4)"></div>`,
-  iconSize: [14, 14],
-  iconAnchor: [7, 7]
-});
-
-function busIcon(heading: number) {
-  return new L.DivIcon({
-    className: "bus-marker-icon",
-    html: `<div style="transform: rotate(${heading}deg); font-size: 28px; line-height: 1;">🚌</div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 16]
-  });
-}
-
-function RecenterOnBus({ position }: { position: [number, number] | null }) {
-  const map = useMap();
-  useEffect(() => {
-    if (position) map.panTo(position, { animate: true });
-  }, [position]);
-  return null;
-}
 
 interface LiveMapProps {
   stops: Stop[];
   snapshot: TrackingSnapshot | null;
   height?: string;
+  pickupStopId?: string;
 }
 
-export default function LiveMap({ stops, snapshot, height = "420px" }: LiveMapProps) {
-  const routeLine = useMemo<[number, number][]>(
-    () => stops.sort((a, b) => a.sequence - b.sequence).map((s) => [s.latitude, s.longitude]),
-    [stops]
-  );
+export default function LiveMap({ stops, snapshot, height = "420px", pickupStopId }: LiveMapProps) {
+  const orderedStops = [...stops].sort((a, b) => a.sequence - b.sequence);
+  const nextSequence = orderedStops.find((stop) => stop.id === snapshot?.nextStopId)?.sequence;
+  const etaByStop = new Map(snapshot?.stopEtas.map((eta) => [eta.stopId, eta]) || []);
 
-  const center: [number, number] = snapshot
-    ? [snapshot.latitude, snapshot.longitude]
-    : routeLine[0] || [15.15, 76.92];
-
-  const busPos: [number, number] | null = snapshot ? [snapshot.latitude, snapshot.longitude] : null;
+  function formatEta(seconds: number) {
+    if (seconds <= 0) return "Arriving";
+    if (seconds < 60) return "< 1 min";
+    const minutes = Math.round(seconds / 60);
+    return minutes < 60 ? `${minutes} min` : `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+  }
 
   return (
-    <div style={{ height }} className="overflow-hidden rounded-xl border border-slate-200">
-      <MapContainer center={center} zoom={13} scrollWheelZoom style={{ height: "100%", width: "100%" }}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {routeLine.length > 1 && <Polyline positions={routeLine} pathOptions={{ color: "#1763b8", weight: 4, opacity: 0.7 }} />}
-        {stops.map((s) => (
-          <Marker key={s.id} position={[s.latitude, s.longitude]} icon={stopIcon}>
-            <Popup>
-              <strong>{s.name}</strong>
-              <br />
-              Stop {s.sequence}
-            </Popup>
-          </Marker>
-        ))}
-        {busPos && (
-          <Marker position={busPos} icon={busIcon(snapshot?.heading || 0)}>
-            <Popup>
-              <strong>Live bus position</strong>
-              <br />
-              {snapshot?.previousStopName} → {snapshot?.nextStopName}
-              <br />
-              Updated {snapshot ? new Date(snapshot.timestamp).toLocaleTimeString() : ""}
-            </Popup>
-          </Marker>
-        )}
-        <RecenterOnBus position={busPos} />
-      </MapContainer>
+    <div style={{ maxHeight: height }} className="overflow-y-auto rounded-2xl border border-slate-200 bg-white">
+      <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
+        <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
+          <span className="text-brand-500">⌄</span>
+          Journey Timeline
+        </div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-semibold text-slate-800">{snapshot ? `Next stop: ${snapshot.nextStopName || "Route complete"}` : "Waiting for live location"}</p>
+            <p className="mt-1 text-xs text-slate-500">{snapshot ? `Last updated ${new Date(snapshot.timestamp).toLocaleTimeString()}` : "The timeline will update when the driver starts the trip."}</p>
+          </div>
+          <div className="rounded-md bg-brand-50 px-3 py-2 text-right">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-700">Estimated time</p>
+            <p className="text-lg font-bold text-brand-700">{snapshot ? formatEta(snapshot.etaToNextStopSeconds) : "—"}</p>
+          </div>
+        </div>
+      </div>
+      <ol className="space-y-3 px-4 py-5 sm:px-6">
+        {orderedStops.map((stop: Stop) => {
+          const eta = etaByStop.get(stop.id);
+          const isNext = stop.id === snapshot?.nextStopId;
+          const isPassed = Boolean(snapshot && nextSequence !== undefined && stop.sequence < nextSequence && !eta);
+          const isPickup = stop.id === pickupStopId;
+          return (
+            <li key={stop.id} className="relative flex gap-3">
+              <div className="relative flex w-5 shrink-0 justify-center">
+                {stop.sequence < orderedStops.length && <span className="absolute top-5 h-[calc(100%+0.75rem)] w-0.5 bg-emerald-300" />}
+                <span className={`relative z-10 mt-1 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm ${isNext ? "bg-brand-500 ring-4 ring-brand-100" : isPassed ? "bg-emerald-500" : "bg-slate-300"}`} />
+              </div>
+              <div className={`min-w-0 flex-1 rounded-xl px-4 py-3 ${isNext ? "border border-brand-200 bg-brand-50" : "bg-emerald-50/70"}`}>
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div>
+                    <p className={`font-semibold ${isNext ? "text-brand-800" : "text-slate-700"}`}>{stop.name}</p>
+                    <p className="mt-1 text-[11px] font-medium uppercase tracking-wider text-slate-400">Stop {stop.sequence}</p>
+                  </div>
+                  <span className={`rounded-md px-2 py-1 text-xs font-bold ${isPassed ? "bg-slate-100 text-slate-500" : isNext ? "bg-brand-500 text-white" : "bg-emerald-100 text-emerald-700"}`}>
+                    {isPassed ? "Passed" : eta ? formatEta(eta.etaSeconds) : "Awaiting"}
+                  </span>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500">
+                  <span>{isNext ? "Next stop" : isPassed ? "Reached" : "Upcoming"}</span>
+                  {eta && <span>{(eta.distanceMeters / 1000).toFixed(1)} km away</span>}
+                  {isPickup && <span className="font-semibold text-brand-700">Your stop</span>}
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
