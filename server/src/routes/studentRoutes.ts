@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { requireAuth, requireRole, AuthedRequest } from "../middleware/auth";
 import {
-  studentsRepo, busesRepo, routesRepo, stopsRepo, passesRepo, feesRepo,
+  studentsRepo, busesRepo, routesRepo, stopsRepo, passesRepo, feesRepo, driversRepo, usersRepo,
   boardingRepo, notificationsRepo, tripsRepo
 } from "../data/repositories";
 
@@ -23,8 +23,10 @@ router.get("/profile", (req: AuthedRequest, res) => {
   const pass = passesRepo.findOneWhere((p) => p.studentId === student.id);
   const fee = feesRepo.findOneWhere((f) => f.studentId === student.id);
   const activeTrip = tripsRepo.findOneWhere((t) => t.busId === student.assignedBusId && t.status === "in_progress");
+  const driver = driversRepo.findOneWhere((d) => d.assignedBusId === student.assignedBusId);
+  const driverUser = driver ? usersRepo.findById(driver.userId) : undefined;
 
-  res.json({ student, bus, route, stops, pickupStop, pass, fee, activeTrip });
+  res.json({ student, bus, route, stops, pickupStop, pass, fee, activeTrip, driver: driver ? { ...driver, name: driverUser?.name, phone: driverUser?.phone } : null });
 });
 
 router.get("/history", (req: AuthedRequest, res) => {

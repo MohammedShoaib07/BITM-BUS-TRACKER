@@ -53,12 +53,12 @@ function seed() {
   const adminUser = { id: uuid(), email: "admin@bitm.edu", passwordHash: hash("admin123"), role: "admin" as const, name: "Transport Officer", phone: "9900000000" };
   usersRepo.insert(adminUser);
 
-  const driverUser = { id: uuid(), email: "driver1@bitm.edu", passwordHash: hash("driver123"), role: "driver" as const, name: "Ramesh Kumar", phone: "9900000001" };
+  const driverUser = { id: uuid(), email: "driver1@bitm.edu", passwordHash: hash("driver123"), role: "driver" as const, name: "Ramesh Kumar", phone: "9880558995" };
   usersRepo.insert(driverUser);
   const driverId = uuid();
   driversRepo.insert({ id: driverId, userId: driverUser.id, licenseNumber: "KA34-DL-99871", assignedBusId: busId });
 
-  const driverUser2 = { id: uuid(), email: "driver2@bitm.edu", passwordHash: hash("driver123"), role: "driver" as const, name: "Suresh Naik", phone: "9900000002" };
+  const driverUser2 = { id: uuid(), email: "driver2@bitm.edu", passwordHash: hash("driver123"), role: "driver" as const, name: "Suresh Naik", phone: "7676652819" };
   usersRepo.insert(driverUser2);
   const driverId2 = uuid();
   driversRepo.insert({ id: driverId2, userId: driverUser2.id, licenseNumber: "KA34-DL-99872", assignedBusId: busId2 });

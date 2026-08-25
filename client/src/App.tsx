@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes, Link, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import StudentDashboard from "./pages/student/Dashboard";
 import StudentPass from "./pages/student/Pass";
-import StudentHistory from "./pages/student/History";
 import DriverDashboard from "./pages/driver/Dashboard";
 import AdminDashboard from "./pages/admin/Dashboard";
 
@@ -15,8 +14,7 @@ function NavBar() {
 
   const studentLinks = [
     { to: "/", label: "Track Bus" },
-    { to: "/pass", label: "Digital Pass" },
-    { to: "/history", label: "History" }
+    { to: "/pass", label: "Digital Pass" }
   ];
 
   return (
@@ -68,6 +66,24 @@ function RoleHome() {
 
 export default function App() {
   const { user } = useAuth();
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShowSplash(false), 1400);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-center text-white">
+        <div className="animate-pulse">
+          <p className="text-3xl font-black tracking-tight">BITM SmartBus</p>
+          <p className="mt-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Developed by team Dotenv</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <NavBar />
@@ -75,7 +91,6 @@ export default function App() {
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/" element={<RequireAuth><RoleHome /></RequireAuth>} />
         <Route path="/pass" element={<RequireAuth><StudentPass /></RequireAuth>} />
-        <Route path="/history" element={<RequireAuth><StudentHistory /></RequireAuth>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

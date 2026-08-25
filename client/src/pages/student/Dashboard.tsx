@@ -14,6 +14,7 @@ interface Profile {
   pass: any;
   fee: any;
   activeTrip: any;
+  driver: any;
 }
 
 function humanEta(seconds: number) {
@@ -54,13 +55,14 @@ export default function StudentDashboard() {
   if (loading) return <p className="p-6 text-slate-500">Loading your dashboard…</p>;
   if (!profile || !profile.student) return <p className="p-6 text-slate-500">No student profile found.</p>;
 
-  const { bus, route, stops, pickupStop, pass, fee, activeTrip } = profile;
+  const { bus, route, stops, pickupStop, pass, fee, activeTrip, driver } = profile;
 
   const pickupEta = snapshot?.stopEtas.find((s) => s.stopId === pickupStop?.id);
 
   return (
     <div className="mx-auto max-w-5xl space-y-4 p-4">
       <Card title={`${route?.name || "Route"} — ${bus?.registrationNumber || "Bus"}`} right={activeTrip ? <Badge tone="green">Live trip in progress</Badge> : <Badge tone="slate">No active trip</Badge>}>
+        {driver && <p className="mb-3 text-sm text-slate-600">Driver: <strong className="text-slate-800">{driver.name}</strong> · {driver.phone} · Bus {bus?.registrationNumber}</p>}
         <LiveMap stops={stops} snapshot={snapshot} pickupStopId={pickupStop?.id} />
       </Card>
 
@@ -70,17 +72,6 @@ export default function StudentDashboard() {
         <StatPill label="Distance to next" value={snapshot ? `${(snapshot.distanceToNextStopMeters / 1000).toFixed(1)} km` : "—"} />
         <StatPill label="ETA to next stop" value={snapshot ? humanEta(snapshot.etaToNextStopSeconds) : "—"} />
       </div>
-
-      <Card title={`Your pickup stop: ${pickupStop?.name || "—"}`}>
-        {pickupEta ? (
-          <p className="text-sm text-slate-700">
-            The bus is <strong>{(pickupEta.distanceMeters / 1000).toFixed(1)} km</strong> away and expected in{" "}
-            <strong>{humanEta(pickupEta.etaSeconds)}</strong>.
-          </p>
-        ) : (
-          <p className="text-sm text-slate-500">No live ETA yet — the driver hasn't started this trip.</p>
-        )}
-      </Card>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Card title="Bus fee status">

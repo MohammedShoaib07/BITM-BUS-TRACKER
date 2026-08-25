@@ -106,11 +106,12 @@ export default function DriverDashboard() {
   }
 
   if (!profile) return <p className="p-6 text-slate-500">Loading driver dashboard…</p>;
-  const { bus, route, stops } = profile;
+  const { bus, route, stops, driver } = profile;
 
   return (
     <div className="mx-auto max-w-5xl space-y-4 p-4">
       <Card title={`${route?.name || "Route"} — ${bus?.registrationNumber || "Bus"}`} right={trip ? <Badge tone="green">Trip in progress ({trip.mode === "simulation" ? "simulated GPS" : "real GPS"})</Badge> : <Badge tone="slate">Not started</Badge>}>
+        <p className="mb-3 text-sm text-slate-600">Driver: <strong className="text-slate-800">{driver?.name || "—"}</strong> · {driver?.phone || "—"} · Bus {bus?.registrationNumber}</p>
         <LiveMap stops={stops} snapshot={snapshot} />
       </Card>
 
