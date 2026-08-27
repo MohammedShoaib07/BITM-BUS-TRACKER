@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const { login, error } = useAuth();
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"choose" | "driver">("choose");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -49,7 +50,12 @@ export default function Login() {
           <p className="mt-1 text-sm text-slate-500">{kannada ? "ಪ್ರತಿ ಕ್ಯಾಂಪಸ್ ಪ್ರಯಾಣವನ್ನು ನೈಜ ಸಮಯದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ." : "Track every campus journey in real time."}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        {mode === "choose" ? (
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button type="button" onClick={() => navigate("/student")} className="rounded-2xl bg-cyan-500 px-4 py-4 text-lg font-black text-white shadow-lg shadow-cyan-900/20 hover:-translate-y-0.5 hover:bg-cyan-600">Student</button>
+            <button type="button" onClick={() => setMode("driver")} className="rounded-2xl bg-slate-900 px-4 py-4 text-lg font-black text-white shadow-lg shadow-slate-900/20 hover:-translate-y-0.5 hover:bg-slate-800">Driver</button>
+          </div>
+        ) : <form onSubmit={handleSubmit} className="space-y-3">
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">{kannada ? "ಇಮೇಲ್" : "Email"}</label>
             <input
@@ -80,9 +86,10 @@ export default function Login() {
           >
             {submitting ? (kannada ? "ಲಾಗಿನ್ ಆಗುತ್ತಿದೆ…" : "Signing in…") : (kannada ? "ಲಾಗಿನ್" : "Sign in")}
           </button>
-        </form>
+          <button type="button" onClick={() => setMode("choose")} className="w-full text-sm font-semibold text-slate-500 hover:text-slate-800">Back</button>
+        </form>}
 
-        <div className="mt-6 rounded-2xl border border-white/70 bg-white/40 p-3 text-xs text-slate-600">
+        {mode === "driver" && <div className="mt-6 rounded-2xl border border-white/70 bg-white/40 p-3 text-xs text-slate-600">
           <p className="mb-2 font-semibold text-slate-700">{kannada ? "ಡೆಮೊ ಖಾತೆಗಳು:" : "Demo accounts (seeded data):"}</p>
           <div className="grid grid-cols-1 gap-1.5">
             <button onClick={() => fill("admin@bitm.edu", "admin123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
@@ -91,14 +98,8 @@ export default function Login() {
             <button onClick={() => fill("driver1@bitm.edu", "driver123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
               {kannada ? "ಚಾಲಕ" : "Driver"} — driver1@bitm.edu / driver123 (Bus 05)
             </button>
-            <button onClick={() => fill("shoaib@bitm.edu", "student@123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
-              Student — shoaib@bitm.edu / student@123 (fee PAID)
-            </button>
-            <button onClick={() => fill("arjun@bitm.edu", "student123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
-              Student — arjun@bitm.edu / student123 (fee PENDING → denied demo)
-            </button>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );

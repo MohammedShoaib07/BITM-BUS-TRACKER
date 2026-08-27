@@ -12,6 +12,8 @@ router.post("/login", (req, res) => {
   const user = usersRepo.findOneWhere((u) => u.email.toLowerCase() === email.toLowerCase());
   if (!user) return res.status(401).json({ error: "Invalid credentials." });
 
+  if ((user as any).role === "student") return res.status(403).json({ error: "Student login is not required. Choose a bus to track." });
+
   const ok = bcrypt.compareSync(password, user.passwordHash);
   if (!ok) return res.status(401).json({ error: "Invalid credentials." });
 

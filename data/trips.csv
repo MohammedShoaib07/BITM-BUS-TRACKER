@@ -1,8 +1,3 @@
 id,busId,routeId,driverId,status,mode,startedAt,endedAt
-180bd6eb-8066-4810-93e2-235e73327ab7,bus-05,route-05,bbeeb73a-c8f6-430c-a0d0-7688ef7c2c79,completed,real_gps,2026-08-24T19:36:35.982Z,2026-08-24T19:40:06.725Z
-f69fccdb-bad8-4848-bd9b-cd8eb28fe707,bus-05,route-05,bbeeb73a-c8f6-430c-a0d0-7688ef7c2c79,completed,real_gps,2026-08-24T19:49:48.969Z,2026-08-24T19:49:51.374Z
-77038e1b-f979-4b88-85bb-641f3a8735f2,bus-05,route-05,bbeeb73a-c8f6-430c-a0d0-7688ef7c2c79,completed,real_gps,2026-08-24T19:52:01.124Z,2026-08-25T05:39:32.577Z
-32d563b7-bc65-4cb7-8e9a-c8f590154321,bus-05,route-05,bbeeb73a-c8f6-430c-a0d0-7688ef7c2c79,completed,simulation,2026-08-25T09:24:40.865Z,2026-08-25T09:26:34.332Z
-0b9dfd95-1bca-4a9a-b278-86b05113bdb8,bus-05,route-05,bbeeb73a-c8f6-430c-a0d0-7688ef7c2c79,completed,simulation,2026-08-25T09:47:46.844Z,2026-08-25T09:48:07.052Z
-e835ff8a-6ba2-427c-bea1-01e290a3fd18,bus-05,route-05,bbeeb73a-c8f6-430c-a0d0-7688ef7c2c79,completed,simulation,2026-08-25T09:48:08.867Z,2026-08-25T09:48:30.629Z
-ba1ef095-6be6-4fd7-8e3e-90c849d5a07c,bus-05,route-05,bbeeb73a-c8f6-430c-a0d0-7688ef7c2c79,in_progress,simulation,2026-08-25T09:51:25.954Z,
+c98be24d-b637-4646-b80f-17789faeeaa2,bus-05,route-05,c4df0d3b-9050-4667-a354-a72c41d78c5b,in_progress,simulation,2026-08-27T15:05:20.020Z,
+0ff136df-b834-41ea-bd5b-83d119c81418,bus-01,route-01,driver-01,completed,real_gps,2026-08-27T15:30:41.526Z,2026-08-27T15:32:02.035Z

@@ -33,19 +33,19 @@ function seed() {
   stops.forEach((s) => stopsRepo.insert(s));
 
   const busId = "bus-05";
-  busesRepo.insert({ id: busId, registrationNumber: "KA-34-F-1234", routeId, capacity: 45, status: "active" });
+  for (let number = 1; number <= 25; number += 1) {
+    const paddedNumber = String(number).padStart(2, "0");
+    busesRepo.insert({
+      id: `bus-${paddedNumber}`,
+      registrationNumber: number === 5 ? "KA-34-F-1234" : number === 12 ? "KA-34-F-5678" : `KA-34-F-${5000 + number}`,
+      routeId,
+      capacity: 45,
+      status: "active"
+    });
+  }
 
   // Second bus/route for realism (fewer demo details, still fully functional)
-  const routeId2 = "route-12";
-  routesRepo.insert({ id: routeId2, name: "Route 12", description: "Gandhinagar - Bellary Bypass - Cowl Bazaar - BITM" });
-  const stopDefs2 = [
-    { name: "Gandhinagar", latitude: 15.1389, longitude: 76.9203, sequence: 1 },
-    { name: "Bellary Bypass", latitude: 15.1420, longitude: 76.9245, sequence: 2 },
-    { name: "Cowl Bazaar", latitude: 15.1465, longitude: 76.9260, sequence: 3 },
-    { name: "BITM", latitude: 15.1523, longitude: 76.9280, sequence: 4 }
-  ];
-  const stops2 = stopDefs2.map((s) => ({ id: uuid(), routeId: routeId2, ...s }));
-  stops2.forEach((s) => stopsRepo.insert(s));
+  const routeId2 = routeId;
   const busId2 = "bus-12";
   busesRepo.insert({ id: busId2, registrationNumber: "KA-34-F-5678", routeId: routeId2, capacity: 40, status: "active" });
 
@@ -73,7 +73,7 @@ function seed() {
     const user = { id: uuid(), email: s.email, passwordHash: hash(s.email === "shoaib@bitm.edu" ? "student@123" : "student123"), role: "student" as const, name: s.name, phone: "9900000100" };
     usersRepo.insert(user);
     const studentId = uuid();
-    const routeStops = s.busId === busId ? stops : stops2;
+    const routeStops = stops;
     studentsRepo.insert({
       id: studentId,
       userId: user.id,

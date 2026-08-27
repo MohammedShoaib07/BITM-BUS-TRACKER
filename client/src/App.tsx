@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes, Link, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
-import StudentDashboard from "./pages/student/Dashboard";
-import StudentPass from "./pages/student/Pass";
+import BusTracker from "./pages/student/BusTracker";
 import DriverDashboard from "./pages/driver/Dashboard";
 import AdminDashboard from "./pages/admin/Dashboard";
 
@@ -11,11 +10,6 @@ function NavBar() {
   const { user, logout } = useAuth();
   const location = useLocation();
   if (!user) return null;
-
-  const studentLinks = [
-    { to: "/", label: "Track Bus" },
-    { to: "/pass", label: "Digital Pass" }
-  ];
 
   return (
     <header className="sticky top-0 z-20 px-3 pt-3 sm:px-5">
@@ -25,16 +19,7 @@ function NavBar() {
           <span className="hidden border-l border-slate-300 pl-3 text-sm font-bold text-slate-800 sm:block">SmartBus</span>
         </Link>
         <nav className="flex items-center gap-1 text-sm">
-          {user.role === "student" &&
-            studentLinks.map((l) => (
-              <Link
-                key={l.to}
-                to={l.to}
-                className={`rounded-2xl px-3 py-2 font-semibold ${location.pathname === l.to ? "bg-slate-900 text-white shadow-lg shadow-slate-900/15" : "text-slate-600 hover:bg-white/70"}`}
-              >
-                {l.label}
-              </Link>
-            ))}
+          {user.role !== "student" && user.role === "driver" && <Link to="/" className={`rounded-2xl px-3 py-2 font-semibold ${location.pathname === "/" ? "bg-slate-900 text-white shadow-lg shadow-slate-900/15" : "text-slate-600 hover:bg-white/70"}`}>Dashboard</Link>}
           <span className="mx-2 hidden h-6 w-px bg-slate-300 sm:block" />
           <span className="hidden text-right sm:block">
             <strong className="block text-xs text-slate-800">{user.name}</strong>
@@ -59,7 +44,7 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 function RoleHome() {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
-  if (user.role === "student") return <StudentDashboard />;
+  if (user.role === "student") return <Navigate to="/student" replace />;
   if (user.role === "driver") return <DriverDashboard />;
   return <AdminDashboard />;
 }
@@ -89,8 +74,9 @@ export default function App() {
       <NavBar />
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="/student" element={<BusTracker />} />
+        <Route path="/student/bus/:busId" element={<BusTracker />} />
         <Route path="/" element={<RequireAuth><RoleHome /></RequireAuth>} />
-        <Route path="/pass" element={<RequireAuth><StudentPass /></RequireAuth>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

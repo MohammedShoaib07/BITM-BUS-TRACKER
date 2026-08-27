@@ -22,7 +22,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const raw = localStorage.getItem("bitm_user");
     const token = localStorage.getItem("bitm_token");
     if (raw && token) {
-      setUser(JSON.parse(raw));
+      const savedUser = JSON.parse(raw) as AuthUser;
+      if (savedUser.role === "student") {
+        localStorage.removeItem("bitm_token");
+        localStorage.removeItem("bitm_user");
+      } else {
+        setUser(savedUser);
+      }
     }
     setLoading(false);
   }, []);

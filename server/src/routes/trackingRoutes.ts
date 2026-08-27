@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { v4 as uuid } from "uuid";
 import { requireAuth, requireRole, AuthedRequest } from "../middleware/auth";
-import { locationsRepo, tripsRepo, busesRepo, driversRepo } from "../data/repositories";
+import { locationsRepo, tripsRepo, busesRepo, driversRepo, routesRepo, stopsRepo } from "../data/repositories";
 import { buildTrackingSnapshot } from "../services/trackingEngine";
 import { startSimulation, pauseSimulation, resumeSimulation, stopSimulation, isSimulating } from "../services/simulationEngine";
 import { getIo } from "../sockets/ioInstance";
@@ -11,6 +11,32 @@ const router = Router();
 // In-memory cache of the latest snapshot per bus, purely a read-through cache
 // on top of the CSV log (bus_locations.csv remains the source of truth).
 const latestSnapshotByBus = new Map<string, ReturnType<typeof buildTrackingSnapshot>>();
+
+router.get("/public/buses", (_req, res) => {
+  const buses = busesRepo.readAll()
+    .map((bus) => {
+      const route = routesRepo.findOneWhere((item) => item.id === bus.routeId);
+      return {
+        id: bus.id,
+        number: Number(bus.id.replace("bus-", "")),
+        registrationNumber: bus.registrationNumber,
+        route: route ? { id: route.id, name: route.name, description: route.description } : null,
+        activeTrip: tripsRepo.findOneWhere((trip) => trip.busId === bus.id && trip.status === "in_progress") || null
+      };
+    })
+    .sort((a, b) => a.number - b.number);
+  res.json(buses);
+});
+
+router.get("/public/buses/:busId", (req, res) => {
+  const bus = busesRepo.findOneWhere((item) => item.id === req.params.busId);
+  if (!bus) return res.status(404).json({ error: "Bus not found." });
+
+  const route = routesRepo.findOneWhere((item) => item.id === bus.routeId);
+  const stops = stopsRepo.findWhere((stop) => stop.routeId === bus.routeId).sort((a, b) => a.sequence - b.sequence);
+  const activeTrip = tripsRepo.findOneWhere((trip) => trip.busId === bus.id && trip.status === "in_progress") || null;
+  res.json({ bus, route, stops, activeTrip, snapshot: latestSnapshotByBus.get(bus.id) || null });
+});
 
 function ingestLocation(fix: {
   busId: string; tripId: string; routeId: string;

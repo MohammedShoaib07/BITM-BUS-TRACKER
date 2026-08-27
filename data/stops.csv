@@ -1,8 +1,145 @@
 id,routeId,name,latitude,longitude,sequence
-72bd8e62-916e-4851-8b1e-981b524f18d5,route-05,Karnataka Function Hall,15.151975303275044,76.8918867863264,1
-a31cd3c8-bb31-49fe-8329-cb65dd7756b1,route-05,Maruti Suzuki Showroom,15.164386618963562,76.86396323909958,2
-e1136520-0e15-4d86-b1c1-bcc2ee91429a,route-05,BITM College,15.168364302977647,76.8508134713878,3
-a03e222f-1ba1-4e67-8e1b-9df0d394c736,route-12,Gandhinagar,15.1389,76.9203,1
-bdc76e67-d5e5-4d33-9463-2211bcba2f60,route-12,Bellary Bypass,15.142,76.9245,2
-faac5d99-dee1-4f71-a8fc-cfeaf77fb380,route-12,Cowl Bazaar,15.1465,76.926,3
-abeaeb25-1086-4995-9a3b-08d5bf44ee37,route-12,BITM,15.1523,76.928,4
+stop-01-01,route-01,M.G. Point,,,1
+stop-01-02,route-01,S. N. PET SBI BANK,,,2
+stop-01-03,route-01,Patel Nagar,,,3
+stop-01-04,route-01,Punjab National Bank,,,4
+stop-01-05,route-01,Raghavendra Swamy Temple,,,5
+stop-01-06,route-01,Cool Corner,,,6
+stop-01-07,route-01,KEB 1st Gate,,,7
+stop-01-08,route-01,BITM,,,8
+stop-02-01,route-02,Satyanarayana Temple - Bandihatti,,,1
+stop-02-02,route-02,Kendriya Vidyalaya 5th Cross,,,2
+stop-02-03,route-02,Azad Nagar Ground,,,3
+stop-02-04,route-02,Near Canal (Belagal Road),,,4
+stop-02-05,route-02,G-Square,,,5
+stop-02-06,route-02,BITM,,,6
+stop-03-01,route-03,Teachers Colony,,,1
+stop-03-02,route-03,Mohammadia School,,,2
+stop-03-03,route-03,Select Talkies,,,3
+stop-03-04,route-03,SBI ATM,,,4
+stop-03-05,route-03,Cowl Bazaar Police Station,,,5
+stop-03-06,route-03,Babu Chowk,,,6
+stop-03-07,route-03,Kunitana Masjid,,,7
+stop-03-08,route-03,BITM,,,8
+stop-04-01,route-04,APMC Govt. School,,,1
+stop-04-02,route-04,Masjid,,,2
+stop-04-03,route-04,Benki Maremma Temple,,,3
+stop-04-04,route-04,Brucepet Police Station,,,4
+stop-04-05,route-04,Maruthi Colony,,,5
+stop-04-06,route-04,Mothi,,,6
+stop-04-07,route-04,Belagal Cross,,,7
+stop-04-08,route-04,BITM,,,8
+stop-05-01,route-05,Water Booster (Basaveswara Nagar),,,1
+stop-05-02,route-05,Kumaraswamy Temple,,,2
+stop-05-03,route-05,KMF Milk Dairy,,,3
+stop-05-04,route-05,M. K. Nagar,,,4
+stop-05-05,route-05,Ambedkar School,,,5
+stop-05-06,route-05,Huligamma Temple,,,6
+stop-05-07,route-05,Satyavani Nagar 3rd Cross,,,7
+stop-05-08,route-05,BITM,,,8
+stop-06-01,route-06,Canal (Talur Road),,,1
+stop-06-02,route-06,Sai Travels,,,2
+stop-06-03,route-06,Shanthi Niketan School,,,3
+stop-06-04,route-06,Basava Bhavan,,,4
+stop-06-05,route-06,Police Gymkhana,,,5
+stop-06-06,route-06,BJP Office,,,6
+stop-06-07,route-06,BITM,,,7
+stop-07-01,route-07,SIRWAR,,,1
+stop-07-02,route-07,Kappagal,,,2
+stop-07-03,route-07,Sanganakal,,,3
+stop-07-04,route-07,Sukrutha Nursing Home,,,4
+stop-07-05,route-07,BITM,,,5
+stop-08-01,route-08,J. K. LAYOUT TALUR ROAD,,,1
+stop-08-02,route-08,Bala Bharathi School,,,2
+stop-08-03,route-08,Govindappa Kalyana Mantapa,,,3
+stop-08-04,route-08,Sneha Colony,,,4
+stop-08-05,route-08,Reddy Hotel,,,5
+stop-08-06,route-08,BITM,,,6
+stop-09-01,route-09,Gangappa Gin,,,1
+stop-09-02,route-09,Sharada Medical Store,,,2
+stop-09-03,route-09,Union Bank,,,3
+stop-09-04,route-09,BITM,,,4
+stop-10-01,route-10,Kanekal Bus Stand,,,1
+stop-10-02,route-10,Dr. Vali Basha,,,2
+stop-10-03,route-10,Vinayaka Temple,,,3
+stop-10-04,route-10,Raghavendra Theatre,,,4
+stop-10-05,route-10,Karnataka Function Hall,,,5
+stop-10-06,route-10,BITM,,,6
+stop-11-01,route-11,Vidya Nagar Mary Matha Church,,,1
+stop-11-02,route-11,Heera Hardware,,,2
+stop-11-03,route-11,Vidyanagar Water Tank,,,3
+stop-11-04,route-11,Surya Apartment,,,4
+stop-11-05,route-11,Batri Circle,,,5
+stop-11-06,route-11,Vidyanagar 5th cross,,,6
+stop-11-07,route-11,Vidyanagar Circle,,,7
+stop-11-08,route-11,OPD,,,8
+stop-11-09,route-11,BITM,,,9
+stop-14-01,route-14,Dream World School,,,1
+stop-14-02,route-14,Kappagal Road 3rd cross Sadashivanagar,,,2
+stop-14-03,route-14,Kappagal Road - Brahmaiah Temple,,,3
+stop-14-04,route-14,Kappagal Road 7th cross,,,4
+stop-14-05,route-14,Kappagal Road 5th cross,,,5
+stop-14-06,route-14,BITM,,,6
+stop-16-01,route-16,Taranath Hospital,,,1
+stop-16-02,route-16,BPSC School,,,2
+stop-16-03,route-16,R. R. Theatre,,,3
+stop-16-04,route-16,Pavan Hotel,,,4
+stop-16-05,route-16,Royal Circle,,,5
+stop-16-06,route-16,Mothi,,,6
+stop-16-07,route-16,Radio Park - Ayyappa Swamy Temple,,,7
+stop-16-08,route-16,BITM,,,8
+stop-17-01,route-17,KAKARLA THOTA,,,1
+stop-17-02,route-17,Guggarahatti Gate,,,2
+stop-17-03,route-17,Check Post,,,3
+stop-17-04,route-17,APMC Gate,,,4
+stop-17-05,route-17,St. Joseph School Backside Circle,,,5
+stop-17-06,route-17,Nalanda College,,,6
+stop-17-07,route-17,Nandi School,,,7
+stop-17-08,route-17,Tilak Nagar,,,8
+stop-17-09,route-17,BITM,,,9
+stop-19-01,route-19,ANDRAL Petrol Bunk,,,1
+stop-19-02,route-19,Bapujinagar Circle,,,2
+stop-19-03,route-19,Beerappa Temple,,,3
+stop-19-04,route-19,BITM,,,4
+stop-20-01,route-20,HP Petrol Bunk (Havambhavi),,,1
+stop-20-02,route-20,Classic Function Hall,,,2
+stop-20-03,route-20,Canal (Havambhavi),,,3
+stop-20-04,route-20,Chaitanya Girls College,,,4
+stop-20-05,route-20,Shivagiri Nagar,,,5
+stop-20-06,route-20,Sriramulu Office,,,6
+stop-20-07,route-20,BBC College,,,7
+stop-20-08,route-20,S. P. Circle,,,8
+stop-20-09,route-20,BITM,,,9
+stop-21-01,route-21,Basaveswara Nagar Kids School,,,1
+stop-21-02,route-21,Basaveswara Temple,,,2
+stop-21-03,route-21,R. K. Hospital / MMTC,,,3
+stop-21-04,route-21,BITM,,,4
+stop-22-01,route-22,Kutty Hotel,,,1
+stop-22-02,route-22,Fort Sai Baba Temple,,,2
+stop-22-03,route-22,Fort Masjid,,,3
+stop-22-04,route-22,Radio Park 2nd Gate,,,4
+stop-22-05,route-22,Yerrithatha Bakery,,,5
+stop-22-06,route-22,Kuvempu Nagar 4th cross,,,6
+stop-22-07,route-22,Kuvempu Nagar 3rd cross,,,7
+stop-22-08,route-22,BITM,,,8
+stop-23-01,route-23,Vajpayee Layout,,,1
+stop-23-02,route-23,Bharath Milk Dairy,,,2
+stop-23-03,route-23,Maremma Temple,,,3
+stop-23-04,route-23,KEB,,,4
+stop-23-05,route-23,Suryanarayana Office,,,5
+stop-23-06,route-23,Gandhinagar 3rd cross,,,6
+stop-23-07,route-23,BITM,,,7
+stop-24-01,route-24,Royal Enfield (Bullet) Showroom,,,1
+stop-24-02,route-24,Water Tank - Raghavendra Colony,,,2
+stop-24-03,route-24,Uma Maheswara Kalyana Mantapa,,,3
+stop-24-04,route-24,Sanna Durgamma Temple,,,4
+stop-24-05,route-24,BITM,,,5
+stop-25-01,route-25,Kappagal Road - Bharath Nursing Home,,,1
+stop-25-02,route-25,Vishal Mart (OPD Cross),,,2
+stop-25-03,route-25,SBI Bank,,,3
+stop-25-04,route-25,Devi Nagar,,,4
+stop-25-05,route-25,Hotel Rock Garden,,,5
+stop-25-06,route-25,Reliance Digital Mart,,,6
+stop-25-07,route-25,Vasavi School,,,7
+stop-25-08,route-25,Old Canara Bank (OPD Cross),,,8
+stop-25-09,route-25,BITM,,,9
