@@ -21,7 +21,7 @@ interface BusDetails {
   snapshot: TrackingSnapshot | null;
 }
 
-const unavailableBuses = new Set([12, 13, 16, 18]);
+const unavailableBuses = new Set([12, 13, 15, 18]);
 
 export default function BusTracker() {
   const navigate = useNavigate();

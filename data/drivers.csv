@@ -1,4 +1,6 @@
 id,userId,licenseNumber,assignedBusId
+driver-demo-01,driver-demo-01,KA34-DL-99871,bus-05
+driver-demo-02,driver-demo-02,KA34-DL-99872,bus-14
 driver-01,bus-01,,bus-01
 driver-02,bus-02,,bus-02
 driver-03,bus-03,,bus-03

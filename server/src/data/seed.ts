@@ -14,40 +14,29 @@ function clear(repo: { readAll: () => any[]; delete: (id: string) => boolean }) 
 }
 
 function seed() {
-  [usersRepo, studentsRepo, driversRepo, busesRepo, routesRepo, stopsRepo, passesRepo, feesRepo, tripsRepo, locationsRepo, boardingRepo, unauthorizedRepo, notificationsRepo]
+  [usersRepo, studentsRepo, driversRepo, busesRepo, passesRepo, feesRepo, tripsRepo, locationsRepo, boardingRepo, unauthorizedRepo, notificationsRepo]
     .forEach(clear);
 
-  // Route 05: Hospet -> Vidyanagar -> Cantonment -> VIMS -> BITM
-  // Real approximate coordinates around Ballari / Hospet, Karnataka.
   const routeId = "route-05";
-  routesRepo.insert({ id: routeId, name: "Route 05", description: "Hospet - Vidyanagar - Cantonment - VIMS - BITM" });
-
-  const stopDefs = [
-    { name: "Hospet", latitude: 15.2688, longitude: 76.3927, sequence: 1 },
-    { name: "Vidyanagar", latitude: 15.1698, longitude: 76.6906, sequence: 2 },
-    { name: "Cantonment", latitude: 15.1394, longitude: 76.9214, sequence: 3 },
-    { name: "VIMS", latitude: 15.1451, longitude: 76.9231, sequence: 4 },
-    { name: "BITM", latitude: 15.1523, longitude: 76.9280, sequence: 5 }
-  ];
-  const stops = stopDefs.map((s) => ({ id: uuid(), routeId, ...s }));
-  stops.forEach((s) => stopsRepo.insert(s));
+  const stops = stopsRepo.findWhere((stop) => stop.routeId === routeId).sort((a, b) => a.sequence - b.sequence);
 
   const busId = "bus-05";
+  const unavailableBusNumbers = new Set([12, 13, 15, 18]);
   for (let number = 1; number <= 25; number += 1) {
+    if (unavailableBusNumbers.has(number)) continue;
     const paddedNumber = String(number).padStart(2, "0");
     busesRepo.insert({
       id: `bus-${paddedNumber}`,
-      registrationNumber: number === 5 ? "KA-34-F-1234" : number === 12 ? "KA-34-F-5678" : `KA-34-F-${5000 + number}`,
-      routeId,
+      registrationNumber: number === 5 ? "KA-34-F-1234" : `KA-34-F-${5000 + number}`,
+      routeId: `route-${paddedNumber}`,
       capacity: 45,
       status: "active"
     });
   }
 
   // Second bus/route for realism (fewer demo details, still fully functional)
-  const routeId2 = routeId;
-  const busId2 = "bus-12";
-  busesRepo.insert({ id: busId2, registrationNumber: "KA-34-F-5678", routeId: routeId2, capacity: 40, status: "active" });
+  const routeId2 = "route-14";
+  const busId2 = "bus-14";
 
   // Users: 1 admin, 2 drivers, 3 students
   const adminUser = { id: uuid(), email: "admin@bitm.edu", passwordHash: hash("admin123"), role: "admin" as const, name: "Transport Officer", phone: "9900000000" };
