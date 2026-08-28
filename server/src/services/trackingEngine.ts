@@ -6,6 +6,7 @@ import { Stop, TrackingSnapshot } from "../types";
 // speed is ~0 (e.g. at a stop) so ETA doesn't divide by zero or spike.
 const FALLBACK_SPEED_KMH = 22;
 const MIN_SPEED_MPS = 1.5; // ~5.4 km/h floor for ETA math
+const STOP_REACHED_RADIUS_METERS = 30;
 
 export interface RawFix {
   busId: string;
@@ -66,6 +67,16 @@ export function buildTrackingSnapshot(fix: RawFix): TrackingSnapshot {
       bestSegmentIdx = i;
       bestT = t;
     }
+  }
+
+  // At a stop, both adjacent segments can be equally close. Prefer the
+  // segment after the stop so the stop is reported as reached.
+  const reachedStopIndex = stops.findIndex((stop) => calculateDistance(
+    fix.latitude, fix.longitude, stop.latitude, stop.longitude
+  ) <= STOP_REACHED_RADIUS_METERS);
+  if (reachedStopIndex > 0 && reachedStopIndex < stops.length - 1) {
+    bestSegmentIdx = reachedStopIndex;
+    bestT = 0;
   }
 
   const previousStop: Stop = stops[bestSegmentIdx];

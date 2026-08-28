@@ -108,7 +108,11 @@ router.post("/trip/start", requireAuth, requireRole("driver", "admin"), (req: Au
   latestSnapshotByBus.delete(busId);
 
   if (mode === "simulation") {
-    startSimulation(busId, trip.id, bus.routeId, ingestLocation);
+    startSimulation(busId, trip.id, bus.routeId, ingestLocation, (tripId, completedBusId) => {
+      const completed = tripsRepo.update(tripId, { status: "completed", endedAt: new Date().toISOString() });
+      getIo().to(`bus:${completedBusId}`).emit("trip:ended", completed);
+      getIo().to("admin").emit("trip:ended", completed);
+    });
   }
 
   getIo().to("admin").emit("trip:started", trip);

@@ -5,6 +5,7 @@ type IngestFn = (fix: {
   busId: string; tripId: string; routeId: string;
   latitude: number; longitude: number; speed: number; heading: number; timestamp: string;
 }) => void;
+type CompleteFn = (tripId: string, busId: string) => void;
 
 interface SimState {
   busId: string;
@@ -18,7 +19,7 @@ interface SimState {
 }
 
 const TICK_MS = 500;
-const TARGET_DURATION_SECONDS = 18;
+const TARGET_DURATION_SECONDS = 20;
 
 const activeSims = new Map<string, SimState>(); // key: busId
 
@@ -28,7 +29,7 @@ const activeSims = new Map<string, SimState>(); // key: busId
  * trackingController.ingestLocation). The simulator only stands in for the
  * hardware GPS chip; nothing downstream is mocked.
  */
-export function startSimulation(busId: string, tripId: string, routeId: string, ingest: IngestFn) {
+export function startSimulation(busId: string, tripId: string, routeId: string, ingest: IngestFn, complete?: CompleteFn) {
   stopSimulation(busId);
 
   const stops = stopsRepo.findWhere((s) => s.routeId === routeId).sort((a, b) => a.sequence - b.sequence);
@@ -59,8 +60,8 @@ export function startSimulation(busId: string, tripId: string, routeId: string, 
     const step = segmentLen > 0 ? (state.speedMps * (TICK_MS / 1000)) / segmentLen : 1;
     state.t += step;
 
-    if (state.t >= 1) {
-      state.t = 0;
+    while (state.t >= 1) {
+      state.t -= 1;
       state.segmentIndex += 1;
       if (state.segmentIndex >= stops.length - 1) {
         // Reached final stop — emit final fix at last stop, then stop.
@@ -71,6 +72,7 @@ export function startSimulation(busId: string, tripId: string, routeId: string, 
           speed: 0, heading: 0, timestamp: new Date().toISOString()
         });
         stopSimulation(busId);
+        complete?.(tripId, busId);
         return;
       }
     }

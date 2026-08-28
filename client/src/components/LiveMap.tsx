@@ -23,24 +23,24 @@ export default function LiveMap({ stops, snapshot, height = "420px", pickupStopI
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white">
-      <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
-        <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
+    <div className="rounded-2xl border border-slate-200 bg-white text-sm">
+      <div className="border-b border-slate-100 px-3 py-3 sm:px-5 sm:py-4">
+        <div className="flex items-center gap-2 text-base font-bold text-slate-900 sm:text-lg">
           <span className="text-brand-500">⌄</span>
           {kannada ? "ಪ್ರಯಾಣದ ಸಮಯರೇಖೆ" : "Journey Timeline"}
         </div>
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2 sm:mt-3 sm:gap-3">
           <div>
-            <p className="font-semibold text-slate-800">{snapshot ? `${kannada ? "ಮುಂದಿನ ನಿಲ್ದಾಣ: " : "Next stop: "}${snapshot.nextStopName || (kannada ? "ಮಾರ್ಗ ಪೂರ್ಣಗೊಂಡಿದೆ" : "Route complete")}` : (kannada ? "ನೈಜ ಸ್ಥಳಕ್ಕಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ" : "Waiting for live location")}</p>
+            <p className="text-sm font-semibold text-slate-800">{snapshot ? `${kannada ? "ಮುಂದಿನ ನಿಲ್ದಾಣ: " : "Next stop: "}${snapshot.nextStopName || (kannada ? "ಮಾರ್ಗ ಪೂರ್ಣಗೊಂಡಿದೆ" : "Route complete")}` : (kannada ? "ನೈಜ ಸ್ಥಳಕ್ಕಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ" : "Waiting for live location")}</p>
             <p className="mt-1 text-xs text-slate-500">{snapshot ? `${kannada ? "ಕೊನೆಯ ನವೀಕರಣ " : "Last updated "}${new Date(snapshot.timestamp).toLocaleTimeString()}` : (kannada ? "ಚಾಲಕ ಪ್ರಯಾಣ ಪ್ರಾರಂಭಿಸಿದಾಗ ಸಮಯರೇಖೆ ನವೀಕರಿಸುತ್ತದೆ." : "The timeline will update when the driver starts the trip.")}</p>
           </div>
-          <div className="rounded-md bg-brand-50 px-3 py-2 text-right">
+          <div className="rounded-md bg-brand-50 px-2 py-1.5 text-right sm:px-3 sm:py-2">
             <p className="text-[10px] font-bold uppercase tracking-widest text-brand-700">{kannada ? "ಅಂದಾಜು ಸಮಯ" : "Estimated time"}</p>
-            <p className="text-lg font-bold text-brand-700">{snapshot ? formatEta(snapshot.etaToNextStopSeconds) : "—"}</p>
+            <p className="text-base font-bold text-brand-700 sm:text-lg">{snapshot ? formatEta(snapshot.etaToNextStopSeconds) : "—"}</p>
           </div>
         </div>
       </div>
-      <ol className="relative space-y-3 px-4 py-5 sm:px-6">
+      <ol className="relative space-y-2 px-3 py-3 sm:space-y-3 sm:px-5 sm:py-5">
         <span className="pointer-events-none absolute bottom-5 left-[1.55rem] top-5 w-0.5 bg-brand-200 sm:left-[2.05rem]" aria-hidden="true" />
         {snapshot && (
           <span
@@ -62,17 +62,17 @@ export default function LiveMap({ stops, snapshot, height = "420px", pickupStopI
               <div className="relative flex w-5 shrink-0 justify-center">
                 <span className={`relative z-10 mt-1 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm ${isNext ? "bg-brand-500 ring-4 ring-brand-100" : isPassed ? "bg-rose-500" : "bg-brand-500"}`} />
               </div>
-              <div className={`min-w-0 flex-1 rounded-xl px-4 py-3 ${isPassed ? "border border-rose-100 bg-rose-50/70" : "border border-brand-200 bg-brand-50"}`}>
+              <div className={`min-w-0 flex-1 rounded-xl px-3 py-2 ${isPassed ? "border border-rose-100 bg-rose-50/70" : "border border-brand-200 bg-brand-50"}`}>
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
-                    <p className={`font-semibold ${isNext ? "text-brand-800" : "text-slate-700"}`}>{stop.name}</p>
+                    <p className={`text-sm font-semibold ${isNext ? "text-brand-800" : "text-slate-700"}`}>{stop.name}</p>
                     <p className="mt-1 text-[11px] font-medium uppercase tracking-wider text-slate-400">{kannada ? "ನಿಲ್ದಾಣ" : "Stop"} {stop.sequence}</p>
                   </div>
                   <span className={`rounded-md px-2 py-1 text-xs font-bold ${isPassed ? "bg-rose-100 text-rose-700" : "bg-brand-100 text-brand-700"}`}>
                     {isPassed ? (kannada ? "ದಾಟಲಾಗಿದೆ" : "Passed") : eta ? formatEta(eta.etaSeconds) : (kannada ? "ಕಾಯಲಾಗುತ್ತಿದೆ" : "Awaiting")}
                   </span>
                 </div>
-                <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500">
+                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-500 sm:mt-3 sm:gap-x-5 sm:text-xs">
                   <span>{isNext ? (kannada ? "ಮುಂದಿನ ನಿಲ್ದಾಣ" : "Next stop") : isPassed ? (kannada ? "ತಲುಪಲಾಗಿದೆ" : "Reached") : (kannada ? "ಮುಂಬರುವ" : "Upcoming")}</span>
                   {eta && <span>{(eta.distanceMeters / 1000).toFixed(1)} km away</span>}
                   {isPickup && <span className="font-semibold text-brand-700">Your stop</span>}

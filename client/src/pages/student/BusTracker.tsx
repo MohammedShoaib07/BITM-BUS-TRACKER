@@ -55,15 +55,15 @@ export default function BusTracker() {
 
   if (busId && details) {
     return (
-      <div className="min-h-screen px-4 py-5 text-slate-900 sm:px-8">
+      <div className="min-h-screen px-3 py-3 text-slate-900 sm:px-8 sm:py-5">
         <div className="mx-auto max-w-6xl">
           <button type="button" onClick={() => navigate("/student")} className="mb-5 text-sm font-bold text-slate-600 hover:text-slate-900">← All buses</button>
-          <section className="glass-panel rounded-3xl p-4 sm:p-6">
-            <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <section className="glass-panel rounded-3xl p-3 sm:p-6">
+            <div className="mb-3 flex flex-wrap items-start justify-between gap-2 sm:mb-4 sm:gap-3">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-700">Bus {details.bus.number}</p>
-                <h1 className="mt-1 text-2xl font-black text-slate-900">{details.route?.name || "Route"}</h1>
-                <p className="mt-1 text-sm text-slate-500">{details.bus.registrationNumber} · {details.route?.description}</p>
+                <h1 className="mt-1 text-xl font-black text-slate-900 sm:text-2xl">{details.route?.name || "Route"}</h1>
+                <p className="mt-1 text-xs text-slate-500 sm:text-sm">{details.bus.registrationNumber} · {details.route?.description}</p>
               </div>
               <span className={`rounded-full px-3 py-1.5 text-xs font-bold ${details.activeTrip ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
                 {details.activeTrip ? "Live trip" : "Not currently moving"}
@@ -90,10 +90,10 @@ export default function BusTracker() {
           >
             ←
           </button>
-          <h1 className="text-xl font-black text-slate-900 sm:text-2xl">Student Dashboard</h1>
+          <h1 className="text-lg font-black text-slate-900 sm:text-2xl">Student Dashboard</h1>
         </div>
         <section className="glass-panel mx-auto w-full max-w-3xl rounded-3xl px-4 py-5 sm:px-6 sm:py-6">
-          <h2 className="text-center text-2xl font-black text-slate-900 sm:text-3xl">Select Your Bus</h2>
+          <h2 className="text-center text-xl font-black text-slate-900 sm:text-3xl">Select Your Bus</h2>
           <div className="mx-auto mt-5 grid max-w-xl grid-cols-4 gap-2 sm:grid-cols-5 sm:gap-3 lg:grid-cols-7">
             {buses.map((bus) => (
               <button

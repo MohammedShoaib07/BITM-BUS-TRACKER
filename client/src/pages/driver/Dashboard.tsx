@@ -30,12 +30,17 @@ export default function DriverDashboard() {
     const handler = (data: TrackingSnapshot) => {
       if (data.busId === profile.bus.id) setSnapshot(data);
     };
+    const tripEndedHandler = (endedTrip: any) => {
+      if (endedTrip.id === trip?.id) setTrip(null);
+    };
     socket.on("bus:location", handler);
+    socket.on("trip:ended", tripEndedHandler);
     return () => {
       socket.emit("unsubscribe:bus", profile.bus.id);
       socket.off("bus:location", handler);
+      socket.off("trip:ended", tripEndedHandler);
     };
-  }, [profile?.bus?.id]);
+  }, [profile?.bus?.id, trip?.id]);
 
   async function startTrip() {
     if (!profile?.bus?.id) return;

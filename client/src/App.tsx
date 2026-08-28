@@ -13,7 +13,7 @@ function NavBar() {
 
   return (
     <header className="sticky top-0 z-20 px-3 pt-3 sm:px-5">
-      <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between rounded-3xl px-4 py-3 sm:px-5">
+      <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-5">
         <Link to="/" className="flex items-center gap-3">
           <img src="/bitm-logo.jpg" alt="BITM" className="h-10 w-24 object-contain" />
           <span className="hidden border-l border-slate-300 pl-3 text-sm font-bold text-slate-800 sm:block">SmartBus</span>
@@ -25,7 +25,7 @@ function NavBar() {
             <strong className="block text-xs text-slate-800">{user.name}</strong>
             <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{user.role}</span>
           </span>
-          <button onClick={logout} className="ml-1 rounded-2xl border border-slate-300/70 bg-white/50 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-white">
+          <button onClick={logout} className="ml-1 bg-white px-3 py-2 text-xs font-bold text-slate-800 hover:bg-blue-100">
             Exit
           </button>
         </nav>
@@ -60,7 +60,7 @@ export default function App() {
 
   if (showSplash) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-center text-white">
+      <main className="flex min-h-screen items-center justify-center bg-blue-600 px-6 text-center text-white">
         <div className="animate-pulse">
           <p className="text-3xl font-black tracking-tight">BITM SmartBus</p>
           <p className="mt-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Developed by team Dotenv</p>

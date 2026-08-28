@@ -1,3 +1,9 @@
 id,busId,routeId,driverId,status,mode,startedAt,endedAt
-c98be24d-b637-4646-b80f-17789faeeaa2,bus-05,route-05,c4df0d3b-9050-4667-a354-a72c41d78c5b,in_progress,simulation,2026-08-27T15:05:20.020Z,
+c98be24d-b637-4646-b80f-17789faeeaa2,bus-05,route-05,c4df0d3b-9050-4667-a354-a72c41d78c5b,completed,simulation,2026-08-27T15:05:20.020Z,2026-08-28T12:36:18.896Z
 0ff136df-b834-41ea-bd5b-83d119c81418,bus-01,route-01,driver-01,completed,real_gps,2026-08-27T15:30:41.526Z,2026-08-27T15:32:02.035Z
+9c9a72a3-99e3-4115-ab3d-c314335df009,bus-05,route-05,driver-demo-01,completed,simulation,2026-08-28T12:36:20.330Z,2026-08-28T12:51:43.844Z
+6f38ad57-f87a-4fc0-b4fa-dccf8702184a,bus-05,route-05,driver-demo-01,completed,simulation,2026-08-28T12:51:45.125Z,2026-08-28T12:52:08.738Z
+a77b35c2-7035-47cd-9670-05248675d6fd,bus-05,route-05,driver-demo-01,completed,simulation,2026-08-28T12:58:17.423Z,2026-08-28T12:58:21.015Z
+6dd59c00-5909-4355-a61f-e8e4e8cdd691,bus-05,route-05,driver-demo-01,completed,real_gps,2026-08-28T13:00:18.200Z,2026-08-28T13:00:29.288Z
+c4cf9d6f-1867-4425-a79d-a3ea2ad834dc,bus-05,route-05,driver-demo-01,completed,simulation,2026-08-28T13:00:32.362Z,2026-08-28T13:00:35.960Z
+b821bad4-b6f9-4329-8ad7-8763a98f4b88,bus-05,route-05,driver-demo-01,completed,simulation,2026-08-28T13:06:18.059Z,2026-08-28T13:06:21.638Z
