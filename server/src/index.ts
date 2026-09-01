@@ -9,7 +9,6 @@ import studentRoutes from "./routes/studentRoutes";
 import driverRoutes from "./routes/driverRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import trackingRoutes from "./routes/trackingRoutes";
-import boardingRoutes from "./routes/boardingRoutes";
 import { setIo } from "./sockets/ioInstance";
 import { registerSockets } from "./sockets";
 
@@ -36,7 +35,6 @@ app.use("/api/student", studentRoutes);
 app.use("/api/driver", driverRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/tracking", trackingRoutes);
-app.use("/api/boarding", boardingRoutes);
 
 app.use((req, res) => res.status(404).json({ error: `No route for ${req.method} ${req.path}` }));
 

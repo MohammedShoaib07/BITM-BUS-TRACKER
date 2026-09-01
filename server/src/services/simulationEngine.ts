@@ -19,7 +19,7 @@ interface SimState {
 }
 
 const TICK_MS = 500;
-const TARGET_DURATION_SECONDS = 20;
+const SECONDS_PER_SEGMENT = 8; // each stop-to-stop leg takes exactly 8 s regardless of distance
 
 const activeSims = new Map<string, SimState>(); // key: busId
 
@@ -34,16 +34,14 @@ export function startSimulation(busId: string, tripId: string, routeId: string, 
 
   const stops = stopsRepo.findWhere((s) => s.routeId === routeId).sort((a, b) => a.sequence - b.sequence);
   if (stops.length < 2) throw new Error("Route needs at least 2 stops to simulate.");
-  const routeDistanceMeters = stops.slice(1).reduce(
-    (total, stop, index) => total + calculateDistance(stops[index].latitude, stops[index].longitude, stop.latitude, stop.longitude),
-    0
-  );
+  // Fixed time per segment: every stop-to-stop leg takes SECONDS_PER_SEGMENT seconds
+  const stepPerTick = (TICK_MS / 1000) / SECONDS_PER_SEGMENT;
 
   const state: SimState = {
     busId, tripId, routeId,
     segmentIndex: 0,
     t: 0,
-    speedMps: routeDistanceMeters / TARGET_DURATION_SECONDS,
+    speedMps: 0,
     timer: null,
     status: "running"
   };
@@ -56,9 +54,7 @@ export function startSimulation(busId: string, tripId: string, routeId: string, 
       stopSimulation(busId);
       return;
     }
-    const segmentLen = calculateDistance(a.latitude, a.longitude, b.latitude, b.longitude);
-    const step = segmentLen > 0 ? (state.speedMps * (TICK_MS / 1000)) / segmentLen : 1;
-    state.t += step;
+    state.t += stepPerTick;
 
     while (state.t >= 1) {
       state.t -= 1;
@@ -82,10 +78,12 @@ export function startSimulation(busId: string, tripId: string, routeId: string, 
     const pos = interpolate(from.latitude, from.longitude, to.latitude, to.longitude, state.t);
     const heading = calculateBearing(from.latitude, from.longitude, to.latitude, to.longitude);
 
+    const segmentLen = calculateDistance(from.latitude, from.longitude, to.latitude, to.longitude);
     ingest({
       busId, tripId, routeId,
       latitude: pos.latitude, longitude: pos.longitude,
-      speed: state.speedMps, heading,
+      speed: segmentLen / SECONDS_PER_SEGMENT,
+      heading,
       timestamp: new Date().toISOString()
     });
   }, TICK_MS);

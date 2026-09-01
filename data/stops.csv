@@ -1,12 +1,12 @@
 id,routeId,name,latitude,longitude,sequence
-stop-01-01,route-01,M.G. Point,,,1
-stop-01-02,route-01,S. N. PET SBI BANK,,,2
-stop-01-03,route-01,Patel Nagar,,,3
-stop-01-04,route-01,Punjab National Bank,,,4
-stop-01-05,route-01,Raghavendra Swamy Temple,,,5
-stop-01-06,route-01,Cool Corner,,,6
-stop-01-07,route-01,KEB 1st Gate,,,7
-stop-01-08,route-01,BITM,,,8
+stop-01-01,route-01,M.G. Point,15.14149941793225,76.94632094145075,1
+stop-01-02,route-01,S. N. PET SBI BANK,15.14860580122637,76.93714562171968,2
+stop-01-03,route-01,Patel Nagar,15.147247470000000,76.93806000000000,3
+stop-01-04,route-01,Punjab National Bank,15.146678549977056,76.93819349468299,4
+stop-01-05,route-01,Raghavendra Swamy Temple,15.147077400238858,76.9368534534232,5
+stop-01-06,route-01,Cool Corner,15.153960832492348,76.93238655429829,6
+stop-01-07,route-01,KEB 1st Gate,15.141498646567982,76.90960635433882,7
+stop-01-08,route-01,BITM,15.168493076349767,76.85072245180538,8
 stop-02-01,route-02,Satyanarayana Temple - Bandihatti,,,1
 stop-02-02,route-02,Kendriya Vidyalaya 5th Cross,,,2
 stop-02-03,route-02,Azad Nagar Ground,,,3

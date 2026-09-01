@@ -76,9 +76,9 @@ export default function StudentDashboard() {
           <Badge tone={fee?.status === "PAID" ? "green" : "red"}>{fee?.status || "UNKNOWN"}</Badge>
           <p className="mt-2 text-xs text-slate-500">Amount ₹{fee?.amount} · Due {fee?.dueDate}</p>
         </Card>
-        <Card title="Digital pass status">
-          <Badge tone={pass?.status === "valid" ? "green" : "red"}>{(pass?.status || "unknown").toUpperCase()}</Badge>
-          <p className="mt-2 text-xs text-slate-500">Pass {pass?.passNumber} · Valid till {pass?.validTo}</p>
+        <Card title="Route details">
+          <p className="text-sm font-semibold text-slate-800">{route?.name || "Route"}</p>
+          <p className="mt-2 text-xs text-slate-500">Assigned bus: {bus?.registrationNumber || "—"}</p>
         </Card>
       </div>
 

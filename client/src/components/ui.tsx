@@ -12,10 +12,10 @@ export function Badge({ tone, children }: { tone: "green" | "red" | "amber" | "s
 
 export function Card({ title, children, right }: { title?: string; children: React.ReactNode; right?: React.ReactNode }) {
   return (
-    <div className="glass-panel p-5">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       {title && (
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="font-bold tracking-tight text-slate-900">{title}</h3>
+          <h3 className="font-semibold tracking-tight text-slate-900">{title}</h3>
           {right}
         </div>
       )}
@@ -26,9 +26,9 @@ export function Card({ title, children, right }: { title?: string; children: Rea
 
 export function StatPill({ label, value }: { label: string; value: string }) {
   return (
-    <div className="glass-panel px-3 py-3 text-center">
+    <div className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-center shadow-sm">
       <div className="truncate text-lg font-bold text-slate-900">{value}</div>
-      <div className="mt-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-500">{label}</div>
+      <div className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-slate-500">{label}</div>
     </div>
   );
 }

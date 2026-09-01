@@ -58,7 +58,7 @@ export default function BusTracker() {
       <div className="min-h-screen px-3 py-3 text-slate-900 sm:px-8 sm:py-5">
         <div className="mx-auto max-w-6xl">
           <button type="button" onClick={() => navigate("/student")} className="mb-5 text-sm font-bold text-slate-600 hover:text-slate-900">← All buses</button>
-          <section className="glass-panel rounded-3xl p-3 sm:p-6">
+          <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-6">
             <div className="mb-3 flex flex-wrap items-start justify-between gap-2 sm:mb-4 sm:gap-3">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-700">Bus {details.bus.number}</p>
@@ -92,7 +92,7 @@ export default function BusTracker() {
           </button>
           <h1 className="text-lg font-black text-slate-900 sm:text-2xl">Student Dashboard</h1>
         </div>
-        <section className="glass-panel mx-auto w-full max-w-3xl rounded-3xl px-4 py-5 sm:px-6 sm:py-6">
+        <section className="mx-auto w-full max-w-3xl rounded-2xl border border-slate-200 bg-white px-4 py-5 shadow-sm sm:px-6 sm:py-6">
           <h2 className="text-center text-xl font-black text-slate-900 sm:text-3xl">Select Your Bus</h2>
           <div className="mx-auto mt-5 grid max-w-xl grid-cols-4 gap-2 sm:grid-cols-5 sm:gap-3 lg:grid-cols-7">
             {buses.map((bus) => (

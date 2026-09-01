@@ -25,14 +25,9 @@ export default function Login() {
     }
   }
 
-  function fill(demoEmail: string, demoPassword: string) {
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-  }
-
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-4">
-      <div className="glass-panel relative w-full max-w-md rounded-[2rem] p-7 sm:p-9">
+      <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-7 shadow-md sm:p-9">
         <div className="mb-3 flex justify-end">
           <button
             type="button"
@@ -89,17 +84,7 @@ export default function Login() {
           <button type="button" onClick={() => setMode("choose")} className="w-full text-sm font-semibold text-slate-500 hover:text-slate-800">Back</button>
         </form>}
 
-        {mode === "driver" && <div className="mt-6 rounded-2xl border border-white/70 bg-white/40 p-3 text-xs text-slate-600">
-          <p className="mb-2 font-semibold text-slate-700">{kannada ? "ಡೆಮೊ ಖಾತೆಗಳು:" : "Demo accounts (seeded data):"}</p>
-          <div className="grid grid-cols-1 gap-1.5">
-            <button onClick={() => fill("admin@bitm.edu", "admin123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
-              Admin — admin@bitm.edu / admin123
-            </button>
-            <button onClick={() => fill("driver1@bitm.edu", "driver123")} className="rounded-xl border border-white/80 bg-white/60 px-3 py-2 text-left hover:bg-white">
-              {kannada ? "ಚಾಲಕ" : "Driver"} — driver1@bitm.edu / driver123 (Bus 05)
-            </button>
-          </div>
-        </div>}
+
       </div>
     </div>
   );
