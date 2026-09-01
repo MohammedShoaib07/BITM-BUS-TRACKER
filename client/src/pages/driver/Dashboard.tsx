@@ -3,6 +3,7 @@ import { api } from "../../services/api";
 import { getSocket } from "../../services/socket";
 import LiveMap from "../../components/LiveMap";
 import { Badge, Card } from "../../components/ui";
+import QRScanner from "../../components/QRScanner";
 import { TrackingSnapshot } from "../../types";
 
 export default function DriverDashboard() {
@@ -138,6 +139,9 @@ export default function DriverDashboard() {
         )}
       </Card>
 
+      <Card title="Scan Student Bus Pass">
+        <QRScanner />
+      </Card>
     </div>
   );
 }

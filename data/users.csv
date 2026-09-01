@@ -1,7 +1,5 @@
 id,email,passwordHash,role,name,phone
 003cb046-fd48-4ee1-b82e-00527d6de582,admin@bitm.edu,$2a$10$BcnzmCYik8gy9sPJoSkSeOlKKM8jU5WQIa89svuInokRjnfYjEM4C,admin,Transport Officer,9900000000
-driver-demo-01,driver1@bitm.edu,$2a$10$56kujrMM34UOQi5E.EetleatGKom0F5wvucJEK3.BeZcweCXsLlau,driver,Ramesh Kumar,9880558995
-driver-demo-02,driver2@bitm.edu,$2a$10$56kujrMM34UOQi5E.EetleatGKom0F5wvucJEK3.BeZcweCXsLlau,driver,Suresh Naik,7676652819
 bus-01,bus-01@bitm.edu,$2a$10$78DwM5SO.7FweDfA9eB4p.K6MU1ZEITp7vcgRBlaV3wbGuOK9RSja,driver,H. M. RAMESH,9901873421
 bus-02,bus-02@bitm.edu,$2a$10$PZgmaQCN8YMLI5.LNlM08OpFLwsl1owbVdhlHJvD2It1T9Zwh6u.S,driver,SHIVA PRASAD,9110206820
 bus-03,bus-03@bitm.edu,$2a$10$8dhOZ6LOF16ir3vCq3W94.k0cEJfZm06KjBDKMYSg9jd4Cv26VSu2,driver,GURU SWAMY,9113672508
@@ -23,6 +21,4 @@ bus-22,bus-22@bitm.edu,$2a$10$T5gsQuBr.LnVflR0B.O14.Xh5aS7U5IK.2rn1BfBZr0kPyFogw
 bus-23,bus-23@bitm.edu,$2a$10$DG8dq5Zw38dMLE2k.GXnD.Qckd0hhZ6hOwL20sA.Mh1fAftugghOS,driver,HULUGAPPA,6364791418
 bus-24,bus-24@bitm.edu,$2a$10$UyI5KWkVcMuYrMwF4M6AfOlZWsvqFPxu.Scue4p3Drlug5PN9Lh72,driver,MARI BASAVA,88614441333
 bus-25,bus-25@bitm.edu,$2a$10$/h4.O0YbG7.xkNh3e3u2Ju/06YIr5SYtQsaISSvHMHRuHxM3WE122,driver,BULLAPPA,8151081081
-45263fb5-7194-435f-93aa-482bb403b591,shoaib@bitm.edu,$2a$10$hPh.rU9ew/kBuzcBdhha7OUpaFNTZ/z2X0R5url2Kq3O/VphXA/UG,student,Shoaib Ahmed,9900000100
-8ac66941-6c2d-4855-95ca-f467a177cdb7,priya@bitm.edu,$2a$10$My7LIayPJVDMwDontFDL8./w0DXXiH5IXPTMbJgeOVdmqCiVVpida,student,Priya Reddy,9900000100
-2ce591f9-ad66-4971-8928-8cacda5e052d,arjun@bitm.edu,$2a$10$8Q0DETUNA3EWN0MS7YGPWeEIdKMLd7vM.SHzRG8ow6jJsz8w/LIli,student,Arjun Patil,9900000100
+
