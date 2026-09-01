@@ -22,7 +22,7 @@ function seed() {
 
   const busId = "bus-05";
   const unavailableBusNumbers = new Set([12, 13, 15, 18]);
-  for (let number = 1; number <= 25; number += 1) {
+  for (let number = 1; number <= 26; number += 1) {
     if (unavailableBusNumbers.has(number)) continue;
     const paddedNumber = String(number).padStart(2, "0");
     busesRepo.insert({
@@ -51,6 +51,11 @@ function seed() {
   usersRepo.insert(driverUser2);
   const driverId2 = uuid();
   driversRepo.insert({ id: driverId2, userId: driverUser2.id, licenseNumber: "KA34-DL-99872", assignedBusId: busId2 });
+
+  // Bus 26 driver
+  const driverUser26 = { id: "bus-26", email: "bus-26@bitm.edu", passwordHash: hash("driver-26"), role: "driver" as const, name: "RAHUL", phone: "9880558995" };
+  usersRepo.insert(driverUser26);
+  driversRepo.insert({ id: "driver-26", userId: "bus-26", licenseNumber: "", assignedBusId: "bus-26" });
 
   const studentSeeds = [
     { email: "shoaib@bitm.edu", name: "Shoaib Ahmed", roll: "1BT21CS045", pass: "PASS-0001", busId, routeId, pickupIdx: 3, feeStatus: "PAID" as const },
