@@ -3,7 +3,7 @@ import { api } from "../../services/api";
 import { getSocket } from "../../services/socket";
 import LiveMap from "../../components/LiveMap";
 import { Badge, Card } from "../../components/ui";
-import QRScanner from "../../components/QRScanner";
+import QRScanner from "../../components/QrScanner";
 import { TrackingSnapshot } from "../../types";
 
 export default function DriverDashboard() {

@@ -4,14 +4,7 @@ import jsQR from "jsqr";
 /*
   Expected QR format (comma-separated, 8 fields):
   2025-26/ECE , MD OWAIS S , 3BR24EC097 , ECE , II - YEAR , 3 & 4 SEM ONLY , Rs. 15000/- , 10.10.2026
-  [0] Academic year / dept
-  [1] Student name
-  [2] Roll number
-  [3] Department
-  [4] Year
-  [5] Semester
-  [6] Fee amount
-  [7] Expiry date  DD.MM.YYYY  ← verified against today
+  [7] Expiry date DD.MM.YYYY — verified against today
 */
 
 interface ParsedPass {
@@ -23,7 +16,7 @@ interface ParsedPass {
   semester: string;
   feeAmount: string;
   expiryDate: string;
-  expiryDateObj: Date | null;
+  expiryDateObj: Date;
 }
 
 type VerifyResult =
@@ -33,30 +26,21 @@ type VerifyResult =
 
 function parseQR(raw: string): VerifyResult {
   const parts = raw.split(",").map((s) => s.trim());
-  if (parts.length < 8) return { status: "invalid", reason: "QR code format not recognised. Not a BITM bus pass." };
+  if (parts.length < 8) return { status: "invalid", reason: "Not a BITM bus pass QR code." };
 
   const [academicYear, name, rollNumber, department, year, semester, feeAmount, expiryRaw] = parts;
-
-  // Parse DD.MM.YYYY
   const dateParts = expiryRaw?.split(".");
-  let expiryDateObj: Date | null = null;
-  if (dateParts?.length === 3) {
-    const [dd, mm, yyyy] = dateParts.map(Number);
-    if (!isNaN(dd) && !isNaN(mm) && !isNaN(yyyy)) {
-      expiryDateObj = new Date(yyyy, mm - 1, dd, 23, 59, 59);
-    }
-  }
+  if (dateParts?.length !== 3) return { status: "invalid", reason: `Unreadable expiry date: "${expiryRaw}"` };
 
-  if (!expiryDateObj) return { status: "invalid", reason: `Cannot read expiry date "${expiryRaw}". Expected DD.MM.YYYY.` };
+  const [dd, mm, yyyy] = dateParts.map(Number);
+  if (isNaN(dd) || isNaN(mm) || isNaN(yyyy)) return { status: "invalid", reason: `Invalid date format: "${expiryRaw}"` };
 
+  const expiryDateObj = new Date(yyyy, mm - 1, dd, 23, 59, 59);
   const pass: ParsedPass = { academicYear, name, rollNumber, department, year, semester, feeAmount, expiryDate: expiryRaw, expiryDateObj };
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
-  return expiryDateObj >= today
-    ? { status: "valid", pass }
-    : { status: "expired", pass };
+  return expiryDateObj >= today ? { status: "valid", pass } : { status: "expired", pass };
 }
 
 export default function QRScanner() {
@@ -68,8 +52,6 @@ export default function QRScanner() {
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [camError, setCamError] = useState<string | null>(null);
-  const [manualInput, setManualInput] = useState("");
-  const [mode, setMode] = useState<"camera" | "manual">("camera");
 
   const stopCamera = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -91,8 +73,8 @@ export default function QRScanner() {
         await videoRef.current.play();
       }
       setScanning(true);
-    } catch (e: any) {
-      setCamError("Camera access denied. Use manual entry below.");
+    } catch {
+      setCamError("Camera access denied. Please allow camera permission and try again.");
     }
   }, []);
 
@@ -125,55 +107,46 @@ export default function QRScanner() {
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, [scanning, stopCamera]);
 
-  // Cleanup on unmount
   useEffect(() => () => stopCamera(), [stopCamera]);
-
-  function handleManual(e: React.FormEvent) {
-    e.preventDefault();
-    if (!manualInput.trim()) return;
-    setResult(parseQR(manualInput.trim()));
-  }
 
   function reset() {
     setResult(null);
-    setManualInput("");
     setCamError(null);
   }
 
   // ── Result screen ──────────────────────────────────────────────────────────
   if (result) {
     const isValid = result.status === "valid";
-    const isExpired = result.status === "expired";
     const pass = result.status !== "invalid" ? result.pass : null;
 
     return (
-      <div className={`rounded-2xl border-2 p-5 ${isValid ? "border-emerald-300 bg-emerald-50" : "border-rose-300 bg-rose-50"}`}>
+      <div className={`rounded-2xl border-2 overflow-hidden ${isValid ? "border-emerald-300" : "border-rose-300"}`}>
         {/* Status banner */}
-        <div className={`mb-4 flex items-center gap-3 rounded-xl px-4 py-3 ${isValid ? "bg-emerald-500" : "bg-rose-500"}`}>
-          <span className="text-3xl">{isValid ? "✅" : "❌"}</span>
-          <div>
-            <p className="text-lg font-black text-white">
-              {isValid ? "BOARDING AUTHORISED" : isExpired ? "FEE NOT PAID / PASS EXPIRED" : "INVALID QR CODE"}
-            </p>
-            <p className="text-xs font-medium text-white/80">
-              {isValid
-                ? `Valid until ${pass!.expiryDate}`
-                : isExpired
-                ? `Pass expired on ${pass!.expiryDate}`
-                : (result as any).reason}
-            </p>
-          </div>
+        <div className={`px-5 py-4 ${isValid ? "bg-emerald-500" : "bg-rose-500"}`}>
+          <p className="text-xs font-bold uppercase tracking-widest text-white/70">
+            {isValid ? "Pass Verification" : "Pass Verification"}
+          </p>
+          <p className="mt-1 text-xl font-black text-white">
+            {isValid ? "BOARDING AUTHORISED" : result.status === "expired" ? "FEE NOT PAID / PASS EXPIRED" : "INVALID QR CODE"}
+          </p>
+          <p className="mt-0.5 text-sm font-medium text-white/80">
+            {isValid
+              ? `Valid until ${pass!.expiryDate}`
+              : result.status === "expired"
+              ? `Pass expired on ${pass!.expiryDate}`
+              : result.reason}
+          </p>
         </div>
 
         {/* Pass details */}
         {pass && (
-          <div className="space-y-2">
-            <Row label="Name" value={pass.name} highlight />
+          <div className={`divide-y px-5 py-3 ${isValid ? "bg-emerald-50 divide-emerald-100" : "bg-rose-50 divide-rose-100"}`}>
+            <Row label="Name" value={pass.name} bold />
             <Row label="Roll No." value={pass.rollNumber} />
             <Row label="Department" value={pass.department} />
-            <Row label="Year / Sem" value={`${pass.year} · ${pass.semester}`} />
+            <Row label="Year / Semester" value={`${pass.year} · ${pass.semester}`} />
             <Row label="Academic Year" value={pass.academicYear} />
-            <Row label="Fee Paid" value={pass.feeAmount} />
+            <Row label="Fee Amount" value={pass.feeAmount} />
             <Row
               label="Valid Until"
               value={pass.expiryDate}
@@ -182,134 +155,89 @@ export default function QRScanner() {
           </div>
         )}
 
-        <button
-          onClick={reset}
-          className="mt-5 w-full rounded-xl bg-slate-800 py-3 text-sm font-bold text-white hover:bg-slate-700 active:scale-95 transition-transform"
-        >
-          Scan Next Passenger
-        </button>
+        <div className={`px-5 py-4 ${isValid ? "bg-emerald-50" : "bg-rose-50"}`}>
+          <button
+            onClick={reset}
+            className="w-full rounded-xl bg-slate-800 py-3 text-sm font-bold text-white hover:bg-slate-700 active:scale-95 transition-transform"
+          >
+            Scan Next Passenger
+          </button>
+        </div>
       </div>
     );
   }
 
   // ── Scanner screen ─────────────────────────────────────────────────────────
   return (
-    <div className="space-y-4">
-      {/* Mode toggle */}
-      <div className="flex rounded-xl border border-slate-200 bg-slate-100 p-1">
-        {(["camera", "manual"] as const).map((m) => (
-          <button
-            key={m}
-            onClick={() => { stopCamera(); setMode(m); setCamError(null); }}
-            className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
-              mode === m ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            {m === "camera" ? "📷  Camera Scan" : "⌨️  Manual Entry"}
-          </button>
-        ))}
+    <div className="space-y-3">
+      {/* Viewfinder */}
+      <div className="relative overflow-hidden rounded-2xl bg-slate-900" style={{ aspectRatio: "4/3" }}>
+        <video ref={videoRef} className="h-full w-full object-cover" muted playsInline />
+        <canvas ref={canvasRef} className="hidden" />
+
+        {!scanning && !camError && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-slate-900">
+            <div className="h-12 w-12 rounded-full border-2 border-slate-600 flex items-center justify-center">
+              <div className="h-5 w-5 rounded-full border-2 border-slate-500" />
+            </div>
+            <p className="text-sm font-medium text-slate-400">Camera not started</p>
+          </div>
+        )}
+
+        {scanning && (
+          <>
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <div className="relative h-52 w-52 sm:h-60 sm:w-60">
+                {[
+                  "top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-lg",
+                  "top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-lg",
+                  "bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-lg",
+                  "bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-lg",
+                ].map((cls, i) => (
+                  <span key={i} className={`absolute h-8 w-8 border-white ${cls}`} />
+                ))}
+                <div className="absolute inset-x-0 top-1/2 h-px bg-blue-400/70 animate-pulse" />
+              </div>
+            </div>
+            <div className="absolute bottom-4 left-0 right-0 text-center">
+              <span className="rounded-full bg-black/50 px-4 py-1.5 text-xs font-medium text-white tracking-wide">
+                Point camera at QR code
+              </span>
+            </div>
+          </>
+        )}
+
+        {camError && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-slate-900/95 px-6 text-center">
+            <p className="text-sm font-semibold text-rose-400">{camError}</p>
+          </div>
+        )}
       </div>
 
-      {mode === "camera" && (
-        <div className="space-y-3">
-          {/* Viewfinder */}
-          <div className="relative overflow-hidden rounded-2xl bg-black" style={{ aspectRatio: "4/3" }}>
-            <video
-              ref={videoRef}
-              className="h-full w-full object-cover"
-              muted
-              playsInline
-            />
-            <canvas ref={canvasRef} className="hidden" />
-
-            {!scanning && !camError && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-900/80">
-                <span className="text-5xl">📷</span>
-                <p className="text-sm font-medium text-white">Camera not started</p>
-              </div>
-            )}
-
-            {scanning && (
-              <>
-                {/* Corner brackets */}
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                  <div className="relative h-48 w-48 sm:h-56 sm:w-56">
-                    {["top-0 left-0 border-t-4 border-l-4 rounded-tl-lg",
-                      "top-0 right-0 border-t-4 border-r-4 rounded-tr-lg",
-                      "bottom-0 left-0 border-b-4 border-l-4 rounded-bl-lg",
-                      "bottom-0 right-0 border-b-4 border-r-4 rounded-br-lg"
-                    ].map((cls, i) => (
-                      <span key={i} className={`absolute h-8 w-8 border-white ${cls}`} />
-                    ))}
-                    {/* Scan line */}
-                    <div className="absolute inset-x-0 top-1/2 h-0.5 bg-blue-400/80 animate-pulse" />
-                  </div>
-                </div>
-                <div className="absolute bottom-3 left-0 right-0 text-center">
-                  <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white">
-                    Point at QR code on bus pass
-                  </span>
-                </div>
-              </>
-            )}
-
-            {camError && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-slate-900/90 px-6 text-center">
-                <span className="text-3xl">🚫</span>
-                <p className="text-sm font-medium text-rose-300">{camError}</p>
-              </div>
-            )}
-          </div>
-
-          {!scanning ? (
-            <button
-              onClick={startCamera}
-              className="w-full rounded-xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/20 hover:bg-blue-700 active:scale-95 transition-transform"
-            >
-              Start Camera
-            </button>
-          ) : (
-            <button
-              onClick={stopCamera}
-              className="w-full rounded-xl border border-slate-300 bg-white py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 active:scale-95 transition-transform"
-            >
-              Stop Camera
-            </button>
-          )}
-        </div>
-      )}
-
-      {mode === "manual" && (
-        <form onSubmit={handleManual} className="space-y-3">
-          <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Paste QR content
-            </label>
-            <textarea
-              value={manualInput}
-              onChange={(e) => setManualInput(e.target.value)}
-              rows={4}
-              placeholder="2025-26/ECE , MD OWAIS S , 3BR24EC097 , ECE , II - YEAR , 3 & 4 SEM ONLY , Rs. 15000/- , 10.10.2026"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 resize-none"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/20 hover:bg-blue-700 active:scale-95 transition-transform"
-          >
-            Verify Pass
-          </button>
-        </form>
+      {!scanning ? (
+        <button
+          onClick={startCamera}
+          className="w-full rounded-xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-md hover:bg-blue-700 active:scale-95 transition-transform"
+        >
+          Start Camera
+        </button>
+      ) : (
+        <button
+          onClick={stopCamera}
+          className="w-full rounded-xl border border-slate-300 bg-white py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 active:scale-95 transition-transform"
+        >
+          Stop Camera
+        </button>
       )}
     </div>
   );
 }
 
-function Row({ label, value, highlight, valueClass }: { label: string; value: string; highlight?: boolean; valueClass?: string }) {
+function Row({ label, value, bold, valueClass }: { label: string; value: string; bold?: boolean; valueClass?: string }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-lg bg-white/70 px-3 py-2">
-      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">{label}</span>
-      <span className={`text-right text-sm font-semibold ${valueClass ?? (highlight ? "text-slate-900" : "text-slate-700")}`}>
+    <div className="flex items-center justify-between gap-4 py-2.5">
+      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 shrink-0">{label}</span>
+      <span className={`text-right text-sm ${valueClass ?? (bold ? "font-bold text-slate-900" : "font-medium text-slate-700")}`}>
         {value}
       </span>
     </div>
